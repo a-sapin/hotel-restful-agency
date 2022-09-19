@@ -1,0 +1,22 @@
+1. créer et/ou récupérer une instance du registre dans le serveur
+   implémenter l'interface java.rmi.Remote
+   préparer l'importation / l'exportation des objets (héritage depuis java.rmi.server.UnicastRemoteObject)
+   implémenter l'exception java.rmi.RemoteException
+
+2. le registre sera créé spécifiquement sur le port 1099 dans le serveur plutôt que de récupérer le registre depuis l'extérieur
+
+3. 
+
+4. côté serveur
+
+5. afin de l'utiliser d'une machine à une autre
+
+6. already bound exception
+   remote exception
+   access exception
+
+7. 
+
+8. utilise le port par défaut
+
+9.
