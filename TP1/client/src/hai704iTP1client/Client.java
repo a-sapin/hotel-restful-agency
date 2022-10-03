@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import hai704iTP1common.Hello;
+import hai704iTP1common.Animal;
 
 public class Client {
 	
@@ -17,10 +17,13 @@ public class Client {
 		String host = (args.length < 1)? null : args[0];
 		try {
 			Registry registry = LocateRegistry.getRegistry(host);
-			Hello stub = (Hello) registry.lookup("Hello");
-			String response = stub.sayHello();
-			System.out.println("Server response: " + response);
-			stub.printHello();
+			Animal stub = (Animal) registry.lookup("Animal");
+			System.out.println("Server response: " + stub.getFullName());
+			System.out.println("Server response: " + stub.getSpeciesAnimal());
+			System.out.println("Server response: " + stub.getRace());
+			System.out.println("Server response: " + stub.getDossierAnimal());
+			stub.setDossierAnimal("A un rhume");
+			System.out.println("Server response: " + stub.getDossierAnimal());
 		} catch (RemoteException | NotBoundException e) {
 			e.printStackTrace();
 		}

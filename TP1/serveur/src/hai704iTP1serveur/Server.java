@@ -5,9 +5,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
-import hai704iTP1common.Hello;
-
-//import hai704iTP1serveur.HelloImpl;
+import hai704iTP1common.Animal;
+import hai704iTP1common.Species;
 
 public class Server {
 
@@ -17,13 +16,16 @@ public class Server {
 	
 	public static void main(String[] args) {
 		try {
-			Hello obj = new HelloImpl();
+			Animal obj = new AnimalImpl("El Canado", "Lorenzo Puccio", new Species("Canard", 8), "Colvert");
+			obj.setDossierAnimal("En parfaite santé");
 			Registry registry = LocateRegistry.createRegistry(1099);
 			if  (registry == null) {
 				System.err.println("Registry not found");
 			}
 			else {
-				registry.bind("Hello", obj);
+				registry.bind("Animal", obj);
+				//System.setSecurityManager(new SecurityManager());
+				System.setProperty("java.security.policy", "security.policy");
 				System.out.println("Server is ready");
 			}
 			
