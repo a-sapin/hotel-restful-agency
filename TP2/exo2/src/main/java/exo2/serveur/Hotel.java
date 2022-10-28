@@ -12,7 +12,7 @@ public class Hotel {
 	private String rue;
 	private String numero;
 	private String lieudit;
-	private double[] gps; //Taille imposée: deux
+	private double[] gps; //Taille imposée: 2
 	
 	private int etoiles;
 	
