@@ -35,30 +35,48 @@ public class Hotel {
 		this.gps = new double[] {0.0, 0.0};
 	}
 	
+	public Hotel() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getNom() {
 		return this.nom;
 	}
 	
-	public int getEtoiles() {
-		return this.etoiles;
+	public boolean isChambreDispo(Chambre c, LocalDate from, LocalDate to) {
+		for (Reservation r : this.reservations) {
+			if(r.getChambre().equals(c) && !((from.isBefore(r.getArrivee()) && to.isBefore(r.getArrivee())) || (from.isAfter(r.getDepart()) && to.isAfter(r.getDepart())))) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
-	public ArrayList<Chambre> getAllChambres() {
-		return this.chambres;
-	}
-	
-	public ArrayList<Reservation> getAllReservations() {
-		return this.reservations;
+	public LocalDate getPremiereDispo(Chambre c, LocalDate from, LocalDate to) {
+		LocalDate datedispo = LocalDate.now();
+		boolean founddate = false;
+		for (Reservation r1 : this.reservations) {
+			if(!founddate) {
+				datedispo = LocalDate.of(r1.getArrivee().getYear(), r1.getArrivee().getMonthValue(), r1.getArrivee().getDayOfMonth()+1);
+				boolean availabledate = true;
+				for (Reservation r2 : this.reservations) {
+					if(!r1.equals(r2) && this.isChambreDispo(c, from, to)) {
+						availabledate = false;
+					}
+				}
+				if(availabledate) {
+					founddate = true;
+				}
+			}
+		}
+		return datedispo;
 	}
 	
 	public ArrayList<Chambre> getChambresDisponibles(LocalDate from, LocalDate to) {
 		ArrayList<Chambre> dispo = new ArrayList<Chambre>();
 		for (Chambre c : this.chambres) {
-			boolean reservee = false;
-			for(Reservation r : this.reservations) {
-				(from.isAfter(r.getArrivee()) && to.isBefore(r.getDepart()))
-				(from.)
-				if()
+			if(this.isChambreDispo(c, from, to)) {
+				dispo.add(c);
 			}
 		}
 		return dispo;
@@ -85,6 +103,15 @@ public class Hotel {
 
 	public void setPartenaires(ArrayList<Agence> partenaires) {
 		this.partenaires = partenaires;
+	}
+	
+	public Agence getPartenaireById(int id) {
+		for (Agence a : this.partenaires) {
+			if(a.getId() == id) {
+				return a;
+			}
+		}
+		return null;
 	}
 	
 }

@@ -7,9 +7,9 @@ public class Offre {
 	private int id;
 	private int nblits;
 	private LocalDate datedispo;
-	private int prix;
+	private double prix;
 	
-	public Offre(int id, int nblits, LocalDate datedispo, int prix) {
+	public Offre(int id, int nblits, LocalDate datedispo, double prix) {
 		this.id = id;
 		this.nblits = nblits;
 		this.datedispo = datedispo;
@@ -28,7 +28,7 @@ public class Offre {
 		return datedispo;
 	}
 
-	public int getPrix() {
+	public double getPrix() {
 		return prix;
 	}
 	
