@@ -10,8 +10,8 @@ import javax.jws.WebService;
 public interface HotelWebService1 {
 	
 	@WebMethod
-	int connexionAgence(String id, String mdp);
+	int connexionAgence(String id, String mdp) throws Exception;
 	
 	@WebMethod
-	ArrayList<Offre> rechercheParPartenaire(String login, String mdp, LocalDate from, LocalDate to, int nbpersonnes);
+	ArrayList<Offre> rechercheParPartenaire(String login, String mdp, LocalDate from, LocalDate to, int nbpersonnes) throws Exception;
 }
