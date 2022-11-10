@@ -5,14 +5,16 @@ import java.time.LocalDate;
 public class Offre {
 	
 	private int id;
-	private int nblits;
+	private Chambre chambre;
 	private LocalDate datedispo;
+	private LocalDate limitedispo;
 	private double prix;
 	
-	public Offre(int id, int nblits, LocalDate datedispo, double prix) {
+	public Offre(int id, Chambre c, LocalDate datedispo, LocalDate limitedispo, double prix) {
 		this.id = id;
-		this.nblits = nblits;
+		this.chambre = c;
 		this.datedispo = datedispo;
+		this.limitedispo = limitedispo;
 		this.prix = prix;
 	}
 
@@ -20,12 +22,16 @@ public class Offre {
 		return id;
 	}
 
-	public int getNblits() {
-		return nblits;
+	public Chambre getChambre() {
+		return chambre;
 	}
 
 	public LocalDate getDatedispo() {
 		return datedispo;
+	}
+	
+	public LocalDate getLimitedispo() {
+		return limitedispo;
 	}
 
 	public double getPrix() {

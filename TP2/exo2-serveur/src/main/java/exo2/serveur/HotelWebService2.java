@@ -1,5 +1,7 @@
 package exo2.serveur;
 
+import java.util.ArrayList;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -7,9 +9,9 @@ import javax.jws.WebService;
 public interface HotelWebService2 {
 	
 	@WebMethod
-	boolean connexionAgence(Agence a, String login, String mdp);
+	int connexionAgence(String login, String mdp) throws Exception;
 	
 	@WebMethod
-	void reserver(Offre ofr, Client cl) throws Exception;
+	void reserver(ArrayList<Offre> offres, int ofrid, Client cl) throws Exception;
 
 }

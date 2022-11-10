@@ -20,7 +20,7 @@ public class HotelWebService1Impl implements HotelWebService1 {
 	}
 	
 	public boolean isEmptyException(ArrayList<Offre> list) throws Exception {
-		if (list.size() == 0) {
+		if (list.isEmpty()) {
 			throw new Exception("Liste d'offres vide");
 		}
 		return false;
@@ -46,7 +46,7 @@ public class HotelWebService1Impl implements HotelWebService1 {
 			for(int i = 0; i < chambresdispo.size(); i++) {
 				Chambre c = chambresdispo.get(i);
 				if(c.getNblits() == nbpersonnes) {
-					offres.add(new Offre(i, c.getNblits(), h.getPremiereDispo(c, from, to), this.getPrixReduit(c, from, to, loggedagency)));
+					offres.add(new Offre(i, c, h.getPremiereDispo(c, from, to), h.getLimiteDispo(c, from, to), this.getPrixReduit(c, from, to, loggedagency)));
 				}
 			}
 			boolean isempty = this.isEmptyException(offres);

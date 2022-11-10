@@ -2,6 +2,7 @@ package exo2.serveur;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.temporal.ChronoUnit;
 
 public class Hotel {
 	
@@ -34,15 +35,19 @@ public class Hotel {
 		this.numero = -1;
 		this.gps = new double[] {0.0, 0.0};
 	}
-	
-	public Hotel() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public String getNom() {
 		return this.nom;
 	}
 	
+	public int getEtoiles() {
+		return etoiles;
+	}
+	
+	public ArrayList<Reservation> getReservations() {
+		return reservations;
+	}
+
 	public boolean isChambreDispo(Chambre c, LocalDate from, LocalDate to) {
 		for (Reservation r : this.reservations) {
 			if(r.getChambre().equals(c) && !((from.isBefore(r.getArrivee()) && to.isBefore(r.getArrivee())) || (from.isAfter(r.getDepart()) && to.isAfter(r.getDepart())))) {
@@ -72,6 +77,22 @@ public class Hotel {
 		return datedispo;
 	}
 	
+	public LocalDate getLimiteDispo(Chambre c, LocalDate from, LocalDate to) {
+		LocalDate premieredispo = this.getPremiereDispo(c, from, to);
+		for (Reservation r : reservations) {
+			LocalDate arrivee = r.getArrivee();
+			if(premieredispo.isBefore(arrivee) && (ChronoUnit.DAYS.between(premieredispo, arrivee) >= 1)) {
+				if(to.isBefore(arrivee)) {
+					return to;
+				}
+				else {
+					return LocalDate.of(arrivee.getYear(), arrivee.getMonthValue(), arrivee.getDayOfMonth()-1);
+				}
+			}
+		}
+		return null;
+	}
+	
 	public ArrayList<Chambre> getChambresDisponibles(LocalDate from, LocalDate to) {
 		ArrayList<Chambre> dispo = new ArrayList<Chambre>();
 		for (Chambre c : this.chambres) {
@@ -84,10 +105,10 @@ public class Hotel {
 	
 	
 	public String getAdresse() {
-		return this.lieudit + ", " + Integer.toString(this.numero) + " " + this.rue + ", " + this.ville + ", " + this.pays;
+		return Integer.toString(this.numero) + " " + this.rue + ", " + this.lieudit + ", " + this.ville + ", " + this.pays;
 	}
 	
-	public void setAdresse(String lieudit, int numero, String rue, String ville, String pays, double gpsx, double gpsy) {
+	public void setAdresse(int numero, String rue, String lieudit, String ville, String pays, double gpsx, double gpsy) {
 		this.lieudit = lieudit;
 		this.numero = numero;
 		this.rue = rue;
@@ -99,10 +120,6 @@ public class Hotel {
 
 	public ArrayList<Agence> getPartenaires() {
 		return partenaires;
-	}
-
-	public void setPartenaires(ArrayList<Agence> partenaires) {
-		this.partenaires = partenaires;
 	}
 	
 	public Agence getPartenaireById(int id) {

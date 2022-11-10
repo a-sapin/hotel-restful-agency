@@ -72,9 +72,13 @@ public class Publisher {
 		
 		//Création des hotels
 		Hotel h1 = new Hotel("Chez Jacky", 2, chambres1, part1);
+		h1.setAdresse(4, "Rue du Franchouillard", "Quartier de l'Orangette", "Bussy-Saint-Georges", "France", 0.0, 0.0);
 		Hotel h2 = new Hotel("Hotel Memepage", 3, chambres2, part2);
+		h1.setAdresse(21, "Reddit Boulevard", "The Misery", "Hell", "Etats-Unis", 0.0, 0.0);
 		Hotel h3 = new Hotel("The Basement", 1, chambres3, part3);
+		h1.setAdresse(1, "Hill Street", "The Hill", "Detroit", "Etats-Unis", 0.0, 0.0);
 		Hotel h4 = new Hotel("Boulevard Jean-Jaures", 0, chambres4, part4);
+		h1.setAdresse(1, "Boulevard Jean-Jaures", "Centre-ville", "Nîmes", "France", 0.0, 0.0);
 		
 		ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 		hotels.add(h1);
@@ -84,10 +88,10 @@ public class Publisher {
 		
 		for (int i = 0; i < hotels.size(); i++) {
 			Endpoint.publish("http://localhost:8080/" + Integer.toString(i) + "/consultation", new HotelWebService1Impl(hotels.get(i)));
-			//Endpoint.publish("http://localhost:8080/" + Integer.toString(hotel.hashCode()) + "/reservation", new HotelWebService1Impl(hotel));
+			System.out.println("Service de consultation pour " + hotels.get(i).getNom() + " prêt");
+			Endpoint.publish("http://localhost:8080/" + Integer.toString(i) + "/reservation", new HotelWebService2Impl(hotels.get(i)));
+			System.out.println("Service de reservation pour " + hotels.get(i).getNom() + " prêt");
 		}
-		
-		System.out.println("ARE Y'ALL READY???");
 
 	}
 
