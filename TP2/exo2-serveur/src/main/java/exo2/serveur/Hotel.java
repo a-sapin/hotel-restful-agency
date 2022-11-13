@@ -14,7 +14,7 @@ public class Hotel {
 	private String rue;
 	private int numero;
 	private String lieudit;
-	private double[] gps; //Taille imposÃ©e: 2
+	private double[] gps; //Taille imposée: 2
 	
 	private int etoiles;
 	
@@ -58,14 +58,14 @@ public class Hotel {
 	}
 	
 	public LocalDate getPremiereDispo(Chambre c, LocalDate from, LocalDate to) {
-		LocalDate datedispo = LocalDate.now();
+		LocalDate datedispo = from;
 		boolean founddate = false;
 		for (Reservation r1 : this.reservations) {
 			if(!founddate) {
 				datedispo = LocalDate.of(r1.getArrivee().getYear(), r1.getArrivee().getMonthValue(), r1.getArrivee().getDayOfMonth()+1);
 				boolean availabledate = true;
 				for (Reservation r2 : this.reservations) {
-					if(!r1.equals(r2) && this.isChambreDispo(c, from, to)) {
+					if(!r1.equals(r2) && !this.isChambreDispo(c, from, to)) {
 						availabledate = false;
 					}
 				}
@@ -79,6 +79,7 @@ public class Hotel {
 	
 	public LocalDate getLimiteDispo(Chambre c, LocalDate from, LocalDate to) {
 		LocalDate premieredispo = this.getPremiereDispo(c, from, to);
+		premieredispo = LocalDate.of(premieredispo.getYear(), premieredispo.getMonth(), premieredispo.getDayOfMonth()+1);
 		for (Reservation r : reservations) {
 			LocalDate arrivee = r.getArrivee();
 			if(premieredispo.isBefore(arrivee) && (ChronoUnit.DAYS.between(premieredispo, arrivee) >= 1)) {
@@ -90,7 +91,7 @@ public class Hotel {
 				}
 			}
 		}
-		return null;
+		return to;
 	}
 	
 	public ArrayList<Chambre> getChambresDisponibles(LocalDate from, LocalDate to) {

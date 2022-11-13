@@ -1,14 +1,13 @@
 package exo2.serveur;
 
 import java.time.LocalDate;
-//import java.util.regex.*;
 
 public class Client {
 	
 	private String nom;
 	private String prenom;
 	
-	// CoordonnÃ©es bancaires
+	// Coordonnées bancaires
 	private String numerocarte;
 	private LocalDate moisexpiration;
 	private int codesecurite;
@@ -33,11 +32,10 @@ public class Client {
 	}
 	
 	public boolean validBankCoords() throws Exception {
-		//m = Pattern.matches("(\\d{4}-){3}\\d{4}", numerocarte);
 		if((numerocarte.length() == 19) && (String.valueOf(codesecurite).length() == 3) && moisexpiration.isAfter(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1))) {
 			return true;
 		}
-		else throw new Exception("CoordonnÃ©es bancaires invalides");
+		else throw new Exception("Coordonnées bancaires invalides");
 	}
 	
 }

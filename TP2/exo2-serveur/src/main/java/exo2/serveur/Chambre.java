@@ -20,4 +20,9 @@ public class Chambre {
 		return prixnuit;
 	}
 	
+	@Override
+	public String toString() {
+		return "Chambre numéro " + Integer.toString(numero) + ": " + Integer.toString(nblits) + " lits";
+	}
+	
 }

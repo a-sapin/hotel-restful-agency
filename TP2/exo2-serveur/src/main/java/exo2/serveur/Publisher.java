@@ -1,15 +1,13 @@
 package exo2.serveur;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.xml.ws.Endpoint;
 
 public class Publisher {
 
 	public static void main(String[] args) {
 		
-		//CrÃ©ation des chambres
+		//Création des chambres
 		Chambre ch1 = new Chambre(1, 2, 50);
 		Chambre ch2 = new Chambre(2, 1, 39);
 		Chambre ch3 = new Chambre(3, 3, 69);
@@ -42,15 +40,15 @@ public class Publisher {
 		Chambre ch12 = new Chambre(12, 4, 69);
 		
 		ArrayList<Chambre> chambres4 = new ArrayList<Chambre>();
-		chambres1.add(ch10);
-		chambres1.add(ch11);
-		chambres1.add(ch12);
+		chambres4.add(ch10);
+		chambres4.add(ch11);
+		chambres4.add(ch12);
 		
 		
-		//CrÃ©ation des agences
+		//Création des agences
 		Agence a1 = new Agence(1, "Dorchies Airlines", 0.35, "da_agence", "legoat");
-		Agence a2 = new Agence(1, "Mera Summer Camp", 0.10, "msc_agence", "peppibandit");
-		Agence a3 = new Agence(1, "Fazbear Entertainment", 0.1987, "fe_agence", "fnaf_balls");
+		Agence a2 = new Agence(2, "Mera Summer Camp", 0.10, "msc_agence", "peppibandit");
+		Agence a3 = new Agence(3, "Fazbear Entertainment", 0.1987, "fe_agence", "fnaf_balls");
 		
 		ArrayList<Agence> part1 = new ArrayList<Agence>();
 		part1.add(a1);
@@ -70,15 +68,15 @@ public class Publisher {
 		part4.add(a3);
 		
 		
-		//CrÃ©ation des hotels
+		//Création des hotels
 		Hotel h1 = new Hotel("Chez Jacky", 2, chambres1, part1);
 		h1.setAdresse(4, "Rue du Franchouillard", "Quartier de l'Orangette", "Bussy-Saint-Georges", "France", 0.0, 0.0);
 		Hotel h2 = new Hotel("Hotel Memepage", 3, chambres2, part2);
-		h1.setAdresse(21, "Reddit Boulevard", "The Misery", "Hell", "Etats-Unis", 0.0, 0.0);
+		h2.setAdresse(21, "Reddit Boulevard", "The Misery", "Hell", "Etats-Unis", 0.0, 0.0);
 		Hotel h3 = new Hotel("The Basement", 1, chambres3, part3);
-		h1.setAdresse(1, "Hill Street", "The Hill", "Detroit", "Etats-Unis", 0.0, 0.0);
+		h3.setAdresse(1, "Hill Street", "The Hill", "Detroit", "Etats-Unis", 0.0, 0.0);
 		Hotel h4 = new Hotel("Boulevard Jean-Jaures", 0, chambres4, part4);
-		h1.setAdresse(1, "Boulevard Jean-Jaures", "Centre-ville", "NÃ®mes", "France", 0.0, 0.0);
+		h4.setAdresse(1, "Boulevard Jean-Jaures", "Centre-ville", "Nîmes", "France", 0.0, 0.0);
 		
 		ArrayList<Hotel> hotels = new ArrayList<Hotel>();
 		hotels.add(h1);
@@ -88,9 +86,9 @@ public class Publisher {
 		
 		for (int i = 0; i < hotels.size(); i++) {
 			Endpoint.publish("http://localhost:8080/" + Integer.toString(i) + "/consultation", new HotelWebService1Impl(hotels.get(i)));
-			System.out.println("Service de consultation pour " + hotels.get(i).getNom() + " prÃªt");
+			System.out.println("Service de consultation pour " + hotels.get(i).getNom() + " prêt");
 			Endpoint.publish("http://localhost:8080/" + Integer.toString(i) + "/reservation", new HotelWebService2Impl(hotels.get(i)));
-			System.out.println("Service de reservation pour " + hotels.get(i).getNom() + " prÃªt");
+			System.out.println("Service de reservation pour " + hotels.get(i).getNom() + " prêt");
 		}
 
 	}
