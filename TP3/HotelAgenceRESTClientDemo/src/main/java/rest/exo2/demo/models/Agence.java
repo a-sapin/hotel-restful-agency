@@ -1,38 +1,25 @@
 package rest.exo2.demo.models;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Agence {
 	
-	@Id
-	@GeneratedValue
 	private Long id;
-	@Column(name = "Nom")
 	private String nom;
-	@Column(name = "Reduction de prix")
 	private double reduc;
-	@Column(name = "Identifiant de connexion")
 	private String login;
-	@Column(name = "Mot de passe de connexion")
 	private String mdp;
-	@OneToMany(mappedBy = "Agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Hotel> hotels;
+	private ArrayList<Hotel> hotels;
 	
 	public Agence() {
 		
 	}
 	
-	public Agence(String nom, double reduc, String login, String mdp, List<Hotel> hotels) {
+	public Agence(String nom, double reduc, String login, String mdp, ArrayList<Hotel> hotels) {
 		this.nom = nom;
 		this.reduc = reduc;
 		this.login = login;
@@ -80,7 +67,7 @@ public class Agence {
 		this.mdp = mdp;
 	}
 	
-	public List<Hotel> getAllHotels() {
+	public ArrayList<Hotel> getAllHotels() {
 		return hotels;
 	}
 	

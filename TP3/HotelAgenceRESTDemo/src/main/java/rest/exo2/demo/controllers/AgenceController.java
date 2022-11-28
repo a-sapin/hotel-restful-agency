@@ -35,7 +35,7 @@ public class AgenceController {
 		return rep.save(agence);
 	}
 	
-	@PutMapping(uri+"/employees/{id}")
+	@PutMapping(uri+"/agences/{id}")
 	public Agence updateAgence(@RequestBody Agence newAgence, @PathVariable long id) {
 		return rep.findById(id)
 				.map(agence -> {
@@ -49,7 +49,7 @@ public class AgenceController {
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/employees/{id}")
+	@DeleteMapping(uri+"/agences/{id}")
 	public void deleteAgence(long id) throws AgenceException {
 		Agence agence = rep.findById(id)
 				.orElseThrow(() -> new AgenceException(

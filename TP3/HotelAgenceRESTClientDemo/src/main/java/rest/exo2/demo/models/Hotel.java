@@ -3,54 +3,33 @@ package rest.exo2.demo.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
 import java.time.temporal.ChronoUnit;
 
 public class Hotel {
 	
-	@Id
-	@GeneratedValue
 	private Long id;
-	@Column(name = "Nom")
 	private String nom;
 	
 	// Adresse
-	@Column(name = "Pays")
 	private String pays;
-	@Column(name = "Ville")
 	private String ville;
-	@Column(name = "Nom de rue")
 	private String rue;
-	@Column(name = "Numero de batiment")
 	private int numero;
-	@Column(name = "Lieu-dit")
 	private String lieudit;
-	@Column(name = "Coordonnees GPS")
 	private double[] gps; //Taille impos�e: 2
 	
-	@Column(name = "Nombre d'etoiles")
 	private int etoiles;
 	
-	@OneToMany(mappedBy = "Hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Chambre> chambres;
+	private ArrayList<Chambre> chambres;
 	
-	@OneToMany(mappedBy = "Hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Reservation> reservations;
+	private ArrayList<Reservation> reservations;
 	
 	public Hotel() {
 		
 	}
 	
-	public Hotel(Long id, String nom, int etoiles, List<Chambre> chambres, List<Agence> partenaires) {
+	public Hotel(Long id, String nom, int etoiles, ArrayList<Chambre> chambres, ArrayList<Agence> partenaires) {
 		this.id = id;
 		this.nom = nom;
 		this.etoiles = etoiles;
@@ -78,7 +57,7 @@ public class Hotel {
 		return etoiles;
 	}
 	
-	public List<Reservation> getReservations() {
+	public ArrayList<Reservation> getReservations() {
 		return reservations;
 	}
 
