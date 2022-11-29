@@ -1,5 +1,6 @@
 package rest.exo2.demo.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,22 +18,22 @@ public class Agence {
 	@Id
 	@GeneratedValue
 	private Long id;
-	@Column(name = "Nom")
+	//@Column(name = "Nom")
 	private String nom;
-	@Column(name = "Reduction de prix")
+	//@Column(name = "Reduction de prix")
 	private double reduc;
-	@Column(name = "Identifiant de connexion")
+	//@Column(name = "Identifiant de connexion")
 	private String login;
-	@Column(name = "Mot de passe de connexion")
+	//@Column(name = "Mot de passe de connexion")
 	private String mdp;
-	@OneToMany(mappedBy = "Agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Hotel> hotels;
+	//@OneToMany(mappedBy = "agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private ArrayList<Hotel> hotels;
 	
 	public Agence() {
 		
 	}
 	
-	public Agence(String nom, double reduc, String login, String mdp, List<Hotel> hotels) {
+	public Agence(String nom, double reduc, String login, String mdp, ArrayList<Hotel> hotels) {
 		this.nom = nom;
 		this.reduc = reduc;
 		this.login = login;
@@ -80,7 +81,7 @@ public class Agence {
 		this.mdp = mdp;
 	}
 	
-	public List<Hotel> getAllHotels() {
+	public ArrayList<Hotel> getAllHotels() {
 		return hotels;
 	}
 	
