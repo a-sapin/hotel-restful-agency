@@ -1,6 +1,7 @@
 package rest.exo2.demo.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,14 @@ public class AgenceController {
 	@GetMapping(uri+"/agences")
 	public List<Agence> getAllAgences() {
 		return rep.findAll();
+	}
+	
+	@GetMapping(uri+"/agences/{id}")
+	public Agence getAgenceById(@PathVariable long id) throws AgenceException
+	{
+		return rep.findById(id)
+				.orElseThrow(() -> new AgenceException(
+						"ERR : Could not find Agency with that ID :"+id));
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
