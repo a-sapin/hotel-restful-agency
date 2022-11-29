@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +20,7 @@ public class AgenceRESTClientCLI implements CommandLineRunner {
 	
 	@Autowired
 	private RestTemplate proxy;
+	private static String SERVICE_URL; //Read from inputReader
 	private static String URI_AGENCES; 
 	private static String URI_AGENCES_ID;
 
@@ -27,24 +29,35 @@ public class AgenceRESTClientCLI implements CommandLineRunner {
 		BufferedReader inputReader;
 		String userInput = "";
 		
+		System.err.println("DEBUG PRINT : initialising BufferedReader");
+		
 		try {
 			inputReader = new BufferedReader(new InputStreamReader(System.in));
-			//setTestServiceUrl(inputReader);
+			SERVICE_URL = inputReader.readLine(); //Using buffered reader input as value for SERVICE_URL
+			
 			URI_AGENCES = SERVICE_URL + "/employees";
 			URI_AGENCES_ID = URI_AGENCES + "/{id}";
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (InterruptedException e) {
+		}	//Second catch block is FAULTY 
+		/*catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
-	private void processUserInput(BufferedReader reader, String userInput, RestTemplate proxy) {
+	private void processUserInput(BufferedReader reader, String userInput, RestTemplate proxy)
+	{
 		try {
+				//A NE PAS GARDER CT POUR LE CATCH
+				if (false) throw new IOException();
+				// /!\
 			switch(userInput) {
 			case "1":
 				String uri = URI_AGENCES + "/count";
+				String countStr = proxy.getForObject(URI_AGENCES, String.class);
 				ObjectMapper mapper = new ObjectMapper();
+				mapper.readValue(countStr, Map.class);
+				
 				break;
 			case "2":
 				uri = URI_AGENCES;
