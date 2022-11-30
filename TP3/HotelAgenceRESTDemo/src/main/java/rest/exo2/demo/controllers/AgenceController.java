@@ -1,7 +1,6 @@
 package rest.exo2.demo.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,6 +51,7 @@ public class AgenceController {
 					agence.setReduc(newAgence.getReduc());
 					agence.setLogin(newAgence.getLogin());
 					agence.setMdp(newAgence.getMdp());
+					agence.setHotels(newAgence.getHotels());
 					return rep.save(agence);
 				})
 				.orElseGet(() -> rep.save(newAgence));
@@ -59,12 +59,11 @@ public class AgenceController {
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping(uri+"/agences/{id}")
-	public void deleteAgence(long id) throws AgenceException {
+	public void deleteAgence(@PathVariable long id) throws AgenceException {
 		Agence agence = rep.findById(id)
 				.orElseThrow(() -> new AgenceException(
 						"Erreur: agence " + id + " introuvable"));
 		rep.delete(agence);
 	}
 	
-	// Add methods here but I'm not sure what to get
 }

@@ -1,7 +1,6 @@
 package rest.exo2.demo.models;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -11,22 +10,24 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "agences")
 public class Agence {
 	
 	@Id
 	@GeneratedValue
 	private Long id;
-	//@Column(name = "Nom")
+	@Column(name = "nom")
 	private String nom;
-	//@Column(name = "Reduction de prix")
+	@Column(name = "reduc")
 	private double reduc;
-	//@Column(name = "Identifiant de connexion")
+	@Column(name = "login")
 	private String login;
-	//@Column(name = "Mot de passe de connexion")
+	@Column(name = "mdp")
 	private String mdp;
-	//@OneToMany(mappedBy = "agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private ArrayList<Hotel> hotels;
 	
 	public Agence() {
@@ -81,8 +82,12 @@ public class Agence {
 		this.mdp = mdp;
 	}
 	
-	public ArrayList<Hotel> getAllHotels() {
+	public ArrayList<Hotel> getHotels() {
 		return hotels;
+	}
+	
+	public void setHotels(ArrayList<Hotel> hotels) {
+		this.hotels = hotels;
 	}
 	
 	public Hotel getHotelById(long id) throws Exception {

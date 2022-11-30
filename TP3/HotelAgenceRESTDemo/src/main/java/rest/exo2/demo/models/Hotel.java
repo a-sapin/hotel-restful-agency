@@ -3,59 +3,68 @@ package rest.exo2.demo.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import java.time.temporal.ChronoUnit;
 
+@Entity
+@Table(name = "hotels")
 public class Hotel {
 	
 	@Id
 	@GeneratedValue
 	private Long id;
-	@Column(name = "Nom")
+	@Column(name = "nom")
 	private String nom;
 	
 	// Adresse
-	@Column(name = "Pays")
+	@Column(name = "pays")
 	private String pays;
-	@Column(name = "Ville")
+	@Column(name = "ville")
 	private String ville;
-	@Column(name = "Nom de rue")
+	@Column(name = "rue")
 	private String rue;
-	@Column(name = "Numero de batiment")
+	@Column(name = "numero")
 	private int numero;
-	@Column(name = "Lieu-dit")
+	@Column(name = "lieudit")
 	private String lieudit;
-	@Column(name = "Coordonnees GPS")
+	@Column(name = "gps")
 	private double[] gps; //Taille impos�e: 2
 	
-	@Column(name = "Nombre d'etoiles")
+	@Column(name = "etoiles")
 	private int etoiles;
 	
-	@OneToMany(mappedBy = "Hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Chambre> chambres;
+	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private ArrayList<Chambre> chambres;
 	
-	@OneToMany(mappedBy = "Hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Reservation> reservations;
+	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private ArrayList<Reservation> reservations;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "agence_id", nullable = false)
+	private Agence agence;
 	
 	public Hotel() {
 		
 	}
 	
-	public Hotel(Long id, String nom, int etoiles, List<Chambre> chambres, List<Agence> partenaires) {
-		this.id = id;
+	public Hotel(String nom, int etoiles, ArrayList<Chambre> chambres, Agence agence) {
 		this.nom = nom;
 		this.etoiles = etoiles;
 		this.chambres = chambres;
 		this.reservations = new ArrayList<Reservation>();
+		this.agence = agence;
 		
 		this.pays = this.ville = this.rue = this.lieudit = "";
 		this.numero = -1;
@@ -74,12 +83,39 @@ public class Hotel {
 		return this.nom;
 	}
 	
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	
 	public int getEtoiles() {
 		return etoiles;
 	}
+	public void setEtoiles(int etoiles) {
+		this.etoiles = etoiles;
+	}
 	
-	public List<Reservation> getReservations() {
+	public ArrayList<Chambre> getChambres() {
+		return chambres;
+	}
+
+	public void setChambres(ArrayList<Chambre> chambres) {
+		this.chambres = chambres;
+	}
+	
+	public ArrayList<Reservation> getReservations() {
 		return reservations;
+	}
+	
+	public void setReservations(ArrayList<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+	
+	public Agence getAgence() {
+		return agence;
+	}
+	
+	public void setAgence(Agence a) {
+		this.agence = a;
 	}
 
 	public boolean isChambreDispo(Chambre c, LocalDate from, LocalDate to) {
@@ -152,6 +188,54 @@ public class Hotel {
 		this.gps[0] = gpsx;
 		this.gps[1] = gpsy;
 	}
+	
+	public String getPays() {
+		return pays;
+	}
+
+	public void setPays(String pays) {
+		this.pays = pays;
+	}
+
+	public String getVille() {
+		return ville;
+	}
+
+	public void setVille(String ville) {
+		this.ville = ville;
+	}
+
+	public String getRue() {
+		return rue;
+	}
+
+	public void setRue(String rue) {
+		this.rue = rue;
+	}
+
+	public int getNumero() {
+		return numero;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+
+	public String getLieudit() {
+		return lieudit;
+	}
+
+	public void setLieudit(String lieudit) {
+		this.lieudit = lieudit;
+	}
+
+	public double[] getGps() {
+		return gps;
+	}
+
+	public void setGps(double[] gps) {
+		this.gps = gps;
+	}
 
 	@Override
 	public int hashCode() {
@@ -178,5 +262,5 @@ public class Hotel {
 				&& Objects.equals(reservations, other.reservations) && Objects.equals(rue, other.rue)
 				&& Objects.equals(ville, other.ville);
 	}
-	
+
 }
