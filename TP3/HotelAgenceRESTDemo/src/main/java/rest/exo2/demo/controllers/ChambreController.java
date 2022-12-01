@@ -1,7 +1,9 @@
 package rest.exo2.demo.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +12,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import rest.exo2.demo.exceptions.ChambreException;
 import rest.exo2.demo.models.Chambre;
+import rest.exo2.demo.models.Reservation;
 import rest.exo2.demo.repositories.ChambreRepository;
 
+@RestController
 public class ChambreController {
 
+	@Autowired
 	private ChambreRepository rep;
 	private static final String uri = "agenceservice/api";
 	
@@ -39,13 +45,14 @@ public class ChambreController {
 	}
 	
 	@PutMapping(uri+"chambres/{id}")
-	public Chambre updateHotel(@RequestBody Chambre newChambre, @PathVariable long id) {
+	public Chambre updateChambre(@RequestBody Chambre newChambre, @PathVariable long id) {
 		return rep.findById(id)
 				.map(chambre -> {
 					chambre.setNumero(newChambre.getNumero());
 					chambre.setNblits(newChambre.getNblits());
 					chambre.setPrixnuit(newChambre.getPrixnuit());
 					chambre.setHotel(newChambre.getHotel());
+					chambre.setReservations((ArrayList<Reservation>)newChambre.getReservations());
 					return rep.save(chambre);
 				})
 				.orElseGet(() -> rep.save(newChambre));

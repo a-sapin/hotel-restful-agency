@@ -1,7 +1,9 @@
 package rest.exo2.demo.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,13 +12,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import rest.exo2.demo.exceptions.HotelException;
+import rest.exo2.demo.models.Chambre;
 import rest.exo2.demo.models.Hotel;
+import rest.exo2.demo.models.Reservation;
 import rest.exo2.demo.repositories.HotelRepository;
 
+@RestController
 public class HotelController {
 
+	@Autowired
 	private HotelRepository rep;
 	private static final String uri = "agenceservice/api";
 	
@@ -50,8 +57,8 @@ public class HotelController {
 					hotel.setLieudit(newHotel.getLieudit());
 					hotel.setGps(newHotel.getGps());
 					hotel.setEtoiles(newHotel.getEtoiles());
-					hotel.setChambres(newHotel.getChambres());
-					hotel.setReservations(newHotel.getReservations());
+					hotel.setChambres((ArrayList<Chambre>)newHotel.getChambres());
+					hotel.setReservations((ArrayList<Reservation>)newHotel.getReservations());
 					hotel.setAgence(newHotel.getAgence());
 					return rep.save(hotel);
 				})

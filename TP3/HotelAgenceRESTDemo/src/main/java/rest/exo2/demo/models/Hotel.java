@@ -3,6 +3,7 @@ package rest.exo2.demo.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -10,48 +11,47 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "hotels")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Hotel {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "nom")
 	private String nom;
 	
 	// Adresse
-	@Column(name = "pays")
 	private String pays;
-	@Column(name = "ville")
 	private String ville;
-	@Column(name = "rue")
 	private String rue;
-	@Column(name = "numero")
 	private int numero;
-	@Column(name = "lieudit")
 	private String lieudit;
-	@Column(name = "gps")
 	private double[] gps; //Taille impos�e: 2
 	
-	@Column(name = "etoiles")
 	private int etoiles;
 	
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private ArrayList<Chambre> chambres;
+	private List<Chambre> chambres;
 	
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private ArrayList<Reservation> reservations;
+	private List<Reservation> reservations;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "agence_id", nullable = false)
 	private Agence agence;
 	
@@ -94,7 +94,7 @@ public class Hotel {
 		this.etoiles = etoiles;
 	}
 	
-	public ArrayList<Chambre> getChambres() {
+	public List<Chambre> getChambres() {
 		return chambres;
 	}
 
@@ -102,7 +102,7 @@ public class Hotel {
 		this.chambres = chambres;
 	}
 	
-	public ArrayList<Reservation> getReservations() {
+	public List<Reservation> getReservations() {
 		return reservations;
 	}
 	
@@ -243,7 +243,7 @@ public class Hotel {
 		int result = 1;
 		result = prime * result + Arrays.hashCode(gps);
 		result = prime * result
-				+ Objects.hash(chambres, etoiles, id, lieudit, nom, numero, pays, reservations, rue, ville);
+				+ Objects.hash(agence, chambres, etoiles, id, lieudit, nom, numero, pays, reservations, rue, ville);
 		return result;
 	}
 
@@ -256,11 +256,16 @@ public class Hotel {
 		if (getClass() != obj.getClass())
 			return false;
 		Hotel other = (Hotel) obj;
-		return Objects.equals(chambres, other.chambres) && etoiles == other.etoiles && Arrays.equals(gps, other.gps)
-				&& Objects.equals(id, other.id) && Objects.equals(lieudit, other.lieudit)
-				&& Objects.equals(nom, other.nom) && numero == other.numero && Objects.equals(pays, other.pays)
-				&& Objects.equals(reservations, other.reservations) && Objects.equals(rue, other.rue)
-				&& Objects.equals(ville, other.ville);
+		return Objects.equals(agence, other.agence) && Objects.equals(chambres, other.chambres)
+				&& etoiles == other.etoiles && Arrays.equals(gps, other.gps) && Objects.equals(id, other.id)
+				&& Objects.equals(lieudit, other.lieudit) && Objects.equals(nom, other.nom) && numero == other.numero
+				&& Objects.equals(pays, other.pays) && Objects.equals(reservations, other.reservations)
+				&& Objects.equals(rue, other.rue) && Objects.equals(ville, other.ville);
+	}
+
+	@Override
+	public String toString() {
+		return id + ": " + nom + ", " + etoiles + " étoiles via l'agence " + agence.getNom() + " - " + this.getAdresse();
 	}
 
 }

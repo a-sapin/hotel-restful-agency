@@ -1,12 +1,16 @@
 package rest.exo2.demo.data;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
 import rest.exo2.demo.models.Agence;
 import rest.exo2.demo.models.Chambre;
@@ -20,31 +24,40 @@ public class AgenceData {
 	
 	private Logger logger = LoggerFactory.getLogger(AgenceData.class);
 	
+	private static final String dateFormat = "yyyy-MM-dd";
+	
+	@Bean
+	public Jackson2ObjectMapperBuilderCustomizer jsonDateFormatter() {
+		return builder -> {
+            builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)));
+        };
+	}
+	
 	@Bean
 	public CommandLineRunner initDatabase(AgenceRepository repA, HotelRepository repH, ChambreRepository repC) {
 		
 		// Création Chambres
-		Chambre c1 = new Chambre(101, 2, 45, null);
-		Chambre c2 = new Chambre(102, 3, 65, null);
-		Chambre c3 = new Chambre(103, 2, 55, null);
-		Chambre c4 = new Chambre(120, 1, 45, null);
-		Chambre c5 = new Chambre(121, 2, 80, null);
-		Chambre c6 = new Chambre(122, 1, 60, null);
-		Chambre c7 = new Chambre(1, 3, 135, null);
-		Chambre c8 = new Chambre(2, 2, 100, null);
-		Chambre c9 = new Chambre(3, 3, 150, null);
+		Chambre c1 = new Chambre(101, 2, 45, new Hotel());
+		Chambre c2 = new Chambre(102, 3, 65, new Hotel());
+		Chambre c3 = new Chambre(103, 2, 55, new Hotel());
+		Chambre c4 = new Chambre(120, 1, 45, new Hotel());
+		Chambre c5 = new Chambre(121, 2, 80, new Hotel());
+		Chambre c6 = new Chambre(122, 1, 60, new Hotel());
+		Chambre c7 = new Chambre(1, 3, 135, new Hotel());
+		Chambre c8 = new Chambre(2, 2, 100, new Hotel());
+		Chambre c9 = new Chambre(3, 3, 150, new Hotel());
 		
 		// Création Hotels
-		Hotel h1 = new Hotel("Hotel Lapeyronie", 3, null, null);
+		Hotel h1 = new Hotel("Hotel Lapeyronie", 3, new ArrayList<>(), new Agence());
 		h1.setAdresse(80, "rue des Petetes", "", "Montpellier", "France", 0, 0);
-		Hotel h2 = new Hotel("Hotel Paradiso", 4, null, null);
+		Hotel h2 = new Hotel("Hotel Paradiso", 4, new ArrayList<>(), new Agence());
 		h2.setAdresse(135, "boulevard Diderot", "", "Paris", "France", 0, 0);
-		Hotel h3 = new Hotel("Beaumont House", 5, null, null);
+		Hotel h3 = new Hotel("Beaumont House", 5, new ArrayList<>(), new Agence());
 		h3.setAdresse(56, "Shurdington Road", "", "Cheltenham", "Royaume-Uni", 0, 0);
 		
 		// Création Agences
-		Agence a1 = new Agence("Dorchies Airlines", 0.20, "da_agence", "legoat", null);
-		Agence a2 = new Agence("Mera Summer Camp", 0.10, "msc_agence", "peppibandit", null);
+		Agence a1 = new Agence("Dorchies Airlines", 0.20, "da_agence", "legoat", new ArrayList<>());
+		Agence a2 = new Agence("Mera Summer Camp", 0.10, "msc_agence", "peppibandit", new ArrayList<>());
 		
 		// Lien Chambres-Hotels
 		ArrayList<Chambre> cal1 = new ArrayList<Chambre>();

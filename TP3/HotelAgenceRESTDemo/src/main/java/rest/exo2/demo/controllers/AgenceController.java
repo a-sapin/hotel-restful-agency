@@ -1,5 +1,6 @@
 package rest.exo2.demo.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import rest.exo2.demo.exceptions.AgenceException;
 import rest.exo2.demo.models.Agence;
+import rest.exo2.demo.models.Hotel;
 import rest.exo2.demo.repositories.AgenceRepository;
 
 @RestController
@@ -51,7 +53,7 @@ public class AgenceController {
 					agence.setReduc(newAgence.getReduc());
 					agence.setLogin(newAgence.getLogin());
 					agence.setMdp(newAgence.getMdp());
-					agence.setHotels(newAgence.getHotels());
+					agence.setHotels((ArrayList<Hotel>)newAgence.getHotels());
 					return rep.save(agence);
 				})
 				.orElseGet(() -> rep.save(newAgence));

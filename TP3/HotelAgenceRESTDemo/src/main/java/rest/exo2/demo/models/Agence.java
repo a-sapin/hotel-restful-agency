@@ -1,6 +1,7 @@
 package rest.exo2.demo.models;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.CascadeType;
@@ -8,27 +9,30 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "agences")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Agence {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "nom")
 	private String nom;
-	@Column(name = "reduc")
 	private double reduc;
-	@Column(name = "login")
 	private String login;
-	@Column(name = "mdp")
 	private String mdp;
 	@OneToMany(mappedBy = "agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private ArrayList<Hotel> hotels;
+	private List<Hotel> hotels;
 	
 	public Agence() {
 		
@@ -82,7 +86,7 @@ public class Agence {
 		this.mdp = mdp;
 	}
 	
-	public ArrayList<Hotel> getHotels() {
+	public List<Hotel> getHotels() {
 		return hotels;
 	}
 	
