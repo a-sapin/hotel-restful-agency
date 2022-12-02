@@ -18,12 +18,15 @@ import rest.exo2.demo.exceptions.AgenceException;
 import rest.exo2.demo.models.Agence;
 import rest.exo2.demo.models.Hotel;
 import rest.exo2.demo.repositories.AgenceRepository;
+import rest.exo2.demo.repositories.HotelRepository;
 
 @RestController
 public class AgenceController {
 	
 	@Autowired
 	private AgenceRepository rep;
+	@Autowired
+	private HotelRepository repH;
 	private static final String uri = "agenceservice/api";
 	
 	@GetMapping(uri+"/agences")
@@ -66,6 +69,11 @@ public class AgenceController {
 				.orElseThrow(() -> new AgenceException(
 						"Erreur: agence " + id + " introuvable"));
 		rep.delete(agence);
+	}
+	
+	@GetMapping(uri+"/agences/{id}/hotels")
+	public List<Hotel> getHotelFromAgencyId(@PathVariable Long id) {
+		return repH.findByAgenceId(id);
 	}
 	
 }
