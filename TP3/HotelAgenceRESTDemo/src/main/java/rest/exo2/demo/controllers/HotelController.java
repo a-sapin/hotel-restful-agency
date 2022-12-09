@@ -18,21 +18,27 @@ import rest.exo2.demo.exceptions.HotelException;
 import rest.exo2.demo.models.Chambre;
 import rest.exo2.demo.models.Hotel;
 import rest.exo2.demo.models.Reservation;
+import rest.exo2.demo.repositories.ChambreRepository;
 import rest.exo2.demo.repositories.HotelRepository;
+import rest.exo2.demo.repositories.ReservationRepository;
 
 @RestController
 public class HotelController {
 
 	@Autowired
 	private HotelRepository rep;
-	private static final String uri = "agenceservice/api";
+	@Autowired
+	private ChambreRepository repC;
+	@Autowired
+	private ReservationRepository repR;
+	private static final String uri = "agenceservice/api/hotels";
 	
-	@GetMapping(uri+"/hotels")
+	@GetMapping(uri)
 	public List<Hotel> getHotels() {
 		return rep.findAll();
 	}
 	
-	@GetMapping(uri+"/hotels/{id}")
+	@GetMapping(uri+"/{id}")
 	public Hotel getHotelById(@PathVariable long id) throws HotelException {
 		return rep.findById(id)
 				.orElseThrow(() -> new HotelException(
@@ -40,12 +46,12 @@ public class HotelController {
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(uri+"/hotels")
+	@PostMapping(uri)
 	public Hotel createHotel(@RequestBody Hotel hotel) {
 		return rep.save(hotel);
 	}
 	
-	@PutMapping(uri+"hotels/{id}")
+	@PutMapping(uri+"/{id}")
 	public Hotel updateHotel(@RequestBody Hotel newHotel, @PathVariable long id) {
 		return rep.findById(id)
 				.map(hotel -> {
@@ -66,11 +72,22 @@ public class HotelController {
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/hotels/{id}")
-	public void deleteHotel(long id) throws HotelException {
+	@DeleteMapping(uri+"/{id}")
+	public void deleteHotel(@PathVariable long id) throws HotelException {
 		Hotel hotel = rep.findById(id)
 				.orElseThrow(() -> new HotelException(
 						"Erreur: hotel " + id + " introuvable"));
 		rep.delete(hotel);
 	}
+	
+	@GetMapping(uri+"/{id}/chambres")
+	public List<Chambre> getChambreFromHotelId(@PathVariable Long id) {
+		return repC.findByHotelId(id);
+	}
+	
+	@GetMapping(uri+"/{id}/reservations")
+	public List<Reservation> getReservationFromHotelId(@PathVariable Long id) {
+		return repR.findByHotelId(id);
+	}
+
 }

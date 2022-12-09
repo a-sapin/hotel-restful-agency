@@ -18,20 +18,23 @@ import rest.exo2.demo.exceptions.ClientException;
 import rest.exo2.demo.models.Client;
 import rest.exo2.demo.models.Reservation;
 import rest.exo2.demo.repositories.ClientRepository;
+import rest.exo2.demo.repositories.ReservationRepository;
 
 @RestController
 public class ClientController {
 
 	@Autowired
 	private ClientRepository rep;
-	private static final String uri = "agenceservice/api";
+	@Autowired
+	private ReservationRepository repR;
+	private static final String uri = "agenceservice/api/clients";
 	
-	@GetMapping(uri+"/clients")
+	@GetMapping(uri)
 	public List<Client> getClients() {
 		return rep.findAll();
 	}
 	
-	@GetMapping(uri+"/clients/{id}")
+	@GetMapping(uri+"/{id}")
 	public Client getClientById(@PathVariable long id) throws ClientException {
 		return rep.findById(id)
 				.orElseThrow(() -> new ClientException(
@@ -39,12 +42,12 @@ public class ClientController {
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(uri+"/clients")
+	@PostMapping(uri)
 	public Client createClient(@RequestBody Client client) {
 		return rep.save(client);
 	}
 	
-	@PutMapping(uri+"clients/{id}")
+	@PutMapping(uri+"/{id}")
 	public Client updateClient(@RequestBody Client newClient, @PathVariable long id) {
 		return rep.findById(id)
 				.map(client -> {
@@ -60,11 +63,16 @@ public class ClientController {
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/clients/{id}")
+	@DeleteMapping(uri+"/{id}")
 	public void deleteClient(long id) throws ClientException {
 		Client client = rep.findById(id)
 				.orElseThrow(() -> new ClientException(
 						"Erreur: Client " + id + " introuvable"));
 		rep.delete(client);
+	}
+	
+	@GetMapping(uri+"/{id}/reservations")
+	public List<Reservation> getReservationFromClientId(@PathVariable Long id) {
+		return repR.findByClientId(id);
 	}
 }

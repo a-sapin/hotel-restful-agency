@@ -27,14 +27,14 @@ public class AgenceController {
 	private AgenceRepository rep;
 	@Autowired
 	private HotelRepository repH;
-	private static final String uri = "agenceservice/api";
+	private static final String uri = "agenceservice/api/agences";
 	
-	@GetMapping(uri+"/agences")
+	@GetMapping(uri)
 	public List<Agence> getAllAgences() {
 		return rep.findAll();
 	}
 	
-	@GetMapping(uri+"/agences/{id}")
+	@GetMapping(uri+"/{id}")
 	public Agence getAgenceById(@PathVariable long id) throws AgenceException
 	{
 		return rep.findById(id)
@@ -43,12 +43,12 @@ public class AgenceController {
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(uri+"/agences")
+	@PostMapping(uri)
 	public Agence createAgence(@RequestBody Agence agence) {
 		return rep.save(agence);
 	}
 	
-	@PutMapping(uri+"/agences/{id}")
+	@PutMapping(uri+"/{id}")
 	public Agence updateAgence(@RequestBody Agence newAgence, @PathVariable long id) {
 		return rep.findById(id)
 				.map(agence -> {
@@ -63,7 +63,7 @@ public class AgenceController {
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/agences/{id}")
+	@DeleteMapping(uri+"/{id}")
 	public void deleteAgence(@PathVariable long id) throws AgenceException {
 		Agence agence = rep.findById(id)
 				.orElseThrow(() -> new AgenceException(
@@ -71,7 +71,7 @@ public class AgenceController {
 		rep.delete(agence);
 	}
 	
-	@GetMapping(uri+"/agences/{id}/hotels")
+	@GetMapping(uri+"/{id}/hotels")
 	public List<Hotel> getHotelFromAgencyId(@PathVariable Long id) {
 		return repH.findByAgenceId(id);
 	}

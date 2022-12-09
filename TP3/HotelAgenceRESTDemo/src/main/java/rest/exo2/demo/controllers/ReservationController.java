@@ -22,14 +22,14 @@ public class ReservationController {
 
 	@Autowired
 	private ReservationRepository rep;
-	private static final String uri = "agenceservice/api";
+	private static final String uri = "agenceservice/api/reservations";
 	
-	@GetMapping(uri+"/reservations")
+	@GetMapping(uri)
 	public List<Reservation> getReservations() {
 		return rep.findAll();
 	}
 	
-	@GetMapping(uri+"/reservations/{id}")
+	@GetMapping(uri+"/{id}")
 	public Reservation getReservationById(@PathVariable long id) throws ReservationException {
 		return rep.findById(id)
 				.orElseThrow(() -> new ReservationException(
@@ -37,7 +37,7 @@ public class ReservationController {
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(uri+"/reservations")
+	@PostMapping(uri)
 	public Reservation createReservation(@RequestBody Reservation reservation) {
 		return rep.save(reservation);
 	}
@@ -57,7 +57,7 @@ public class ReservationController {
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/reservations/{id}")
+	@DeleteMapping(uri+"/{id}")
 	public void deleteReservation(long id) throws ReservationException {
 		Reservation reservation = rep.findById(id)
 				.orElseThrow(() -> new ReservationException(

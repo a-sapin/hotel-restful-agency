@@ -18,20 +18,23 @@ import rest.exo2.demo.exceptions.ChambreException;
 import rest.exo2.demo.models.Chambre;
 import rest.exo2.demo.models.Reservation;
 import rest.exo2.demo.repositories.ChambreRepository;
+import rest.exo2.demo.repositories.ReservationRepository;
 
 @RestController
 public class ChambreController {
 
 	@Autowired
 	private ChambreRepository rep;
-	private static final String uri = "agenceservice/api";
+	@Autowired
+	private ReservationRepository repR;
+	private static final String uri = "agenceservice/api/chambres";
 	
-	@GetMapping(uri+"/chambres")
+	@GetMapping(uri)
 	public List<Chambre> getChambres() {
 		return rep.findAll();
 	}
 	
-	@GetMapping(uri+"/chambres/{id}")
+	@GetMapping(uri+"/{id}")
 	public Chambre getChambreById(@PathVariable long id) throws ChambreException {
 		return rep.findById(id)
 				.orElseThrow(() -> new ChambreException(
@@ -39,12 +42,12 @@ public class ChambreController {
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(uri+"/chambres")
+	@PostMapping(uri)
 	public Chambre createChambre(@RequestBody Chambre chambre) {
 		return rep.save(chambre);
 	}
 	
-	@PutMapping(uri+"chambres/{id}")
+	@PutMapping(uri+"/{id}")
 	public Chambre updateChambre(@RequestBody Chambre newChambre, @PathVariable long id) {
 		return rep.findById(id)
 				.map(chambre -> {
@@ -59,11 +62,16 @@ public class ChambreController {
 	}
 	
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/chambres/{id}")
+	@DeleteMapping(uri+"/{id}")
 	public void deleteChambre(long id) throws ChambreException {
 		Chambre chambre = rep.findById(id)
 				.orElseThrow(() -> new ChambreException(
 						"Erreur: Chambre " + id + " introuvable"));
 		rep.delete(chambre);
+	}
+	
+	@GetMapping(uri+"/{id}/reservations")
+	public List<Reservation> getReservationFromChambreId(@PathVariable Long id) {
+		return repR.findByChambreId(id);
 	}
 }
