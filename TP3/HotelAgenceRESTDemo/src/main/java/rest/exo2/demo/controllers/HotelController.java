@@ -45,11 +45,11 @@ public class HotelController {
 						"Could not find Hotel of ID: " + id));
 	}
 	
-	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(uri)
-	public Hotel createHotel(@RequestBody Hotel hotel) {
-		return rep.save(hotel);
-	}
+//	@ResponseStatus(HttpStatus.CREATED)
+//	@PostMapping(uri)
+//	public Hotel createHotel(@RequestBody Hotel hotel) {
+//		return rep.save(hotel);
+//	}
 	
 	@PutMapping(uri+"/{id}")
 	public Hotel updateHotel(@RequestBody Hotel newHotel, @PathVariable long id) {
@@ -71,14 +71,14 @@ public class HotelController {
 				.orElseGet(() -> rep.save(newHotel));
 	}
 	
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/{id}")
-	public void deleteHotel(@PathVariable long id) throws HotelException {
-		Hotel hotel = rep.findById(id)
-				.orElseThrow(() -> new HotelException(
-						"Erreur: hotel " + id + " introuvable"));
-		rep.delete(hotel);
-	}
+//	@ResponseStatus(HttpStatus.NO_CONTENT)
+//	@DeleteMapping(uri+"/{id}")
+//	public void deleteHotel(@PathVariable long id) throws HotelException {
+//		Hotel hotel = rep.findById(id)
+//				.orElseThrow(() -> new HotelException(
+//						"Erreur: hotel " + id + " introuvable"));
+//		rep.delete(hotel);
+//	}
 	
 	@GetMapping(uri+"/{id}/chambres")
 	public List<Chambre> getChambreFromHotelId(@PathVariable Long id) {

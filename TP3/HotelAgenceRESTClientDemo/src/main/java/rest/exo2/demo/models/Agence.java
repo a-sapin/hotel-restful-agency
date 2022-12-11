@@ -1,19 +1,26 @@
 package rest.exo2.demo.models;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Agence {
-	
+
 	private Long id;
 	private String nom;
 	private double reduc;
 	private String login;
 	private String mdp;
-	private ArrayList<Hotel> hotels;
+	
+	private ArrayList<String> hoteluris;
+	
+	private List<Hotel> hotels;
 	
 	public Agence() {
 		
@@ -25,6 +32,7 @@ public class Agence {
 		this.login = login;
 		this.mdp = mdp;
 		this.hotels = hotels;
+		this.hoteluris = hotelsToURI(hotels);
 	}
 
 	public Long getId() {
@@ -67,8 +75,13 @@ public class Agence {
 		this.mdp = mdp;
 	}
 	
-	public ArrayList<Hotel> getAllHotels() {
+	public List<Hotel> getHotels() {
 		return hotels;
+	}
+	
+	public void setHotels(ArrayList<Hotel> hotels) {
+		this.hotels = hotels;
+		this.hoteluris = hotelsToURI(hotels);
 	}
 	
 	public Hotel getHotelById(long id) throws Exception {
@@ -78,6 +91,18 @@ public class Agence {
 			}
 		}
 		throw new Exception("Hotel d'ID " + Long.toString(id) + " introuvable");
+	}
+	
+	public ArrayList<String> hotelsToURI(ArrayList<Hotel> hotelarray) {
+		ArrayList<String> uris = new ArrayList<String>();
+		for(Hotel h: hotelarray) {
+			uris.add("agenceservice/api/hotels/" + h.getId());
+		}
+		return uris;
+	}
+	
+	public ArrayList<String> getHotelURIs() {
+		return hoteluris;
 	}
 
 	@Override

@@ -62,14 +62,14 @@ public class ClientController {
 				.orElseGet(() -> rep.save(newClient));
 	}
 	
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/{id}")
-	public void deleteClient(long id) throws ClientException {
-		Client client = rep.findById(id)
-				.orElseThrow(() -> new ClientException(
-						"Erreur: Client " + id + " introuvable"));
-		rep.delete(client);
-	}
+//	@ResponseStatus(HttpStatus.NO_CONTENT)
+//	@DeleteMapping(uri+"/{id}")
+//	public void deleteClient(long id) throws ClientException {
+//		Client client = rep.findById(id)
+//				.orElseThrow(() -> new ClientException(
+//						"Erreur: Client " + id + " introuvable"));
+//		rep.delete(client);
+//	}
 	
 	@GetMapping(uri+"/{id}/reservations")
 	public List<Reservation> getReservationFromClientId(@PathVariable Long id) {

@@ -17,13 +17,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "chambres")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Chambre {
 	
 	@Id
@@ -37,6 +38,9 @@ public class Chambre {
 	@JoinColumn(name = "hotel_id", nullable = false)
 	private Hotel hotel;
 	
+	private ArrayList<String> reservationuris;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "chambre", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
 	
@@ -46,6 +50,7 @@ public class Chambre {
 		this.prixnuit = prixnuit;
 		this.hotel = h;
 		this.reservations = new ArrayList<Reservation>();
+		this.reservationuris = new ArrayList<String>();
 	}
 	
 	public Chambre() {
@@ -98,6 +103,19 @@ public class Chambre {
 
 	public void setReservations(ArrayList<Reservation> reservations) {
 		this.reservations = reservations;
+		this.reservationuris = this.reservationsToURI(reservations);
+	}
+	
+	public ArrayList<String> reservationsToURI(ArrayList<Reservation> reservationarray) {
+		ArrayList<String> uris = new ArrayList<String>();
+		for(Reservation r: reservationarray) {
+			uris.add("agenceservice/api/reservations/" + r.getId());
+		}
+		return uris;
+	}
+	
+	public ArrayList<String> getReservationURIs() {
+		return reservationuris;
 	}
 
 	@Override

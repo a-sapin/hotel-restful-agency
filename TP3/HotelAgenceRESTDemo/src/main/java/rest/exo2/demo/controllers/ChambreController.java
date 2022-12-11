@@ -41,11 +41,11 @@ public class ChambreController {
 						"Could not find Chambre of ID: " + id));
 	}
 	
-	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(uri)
-	public Chambre createChambre(@RequestBody Chambre chambre) {
-		return rep.save(chambre);
-	}
+//	@ResponseStatus(HttpStatus.CREATED)
+//	@PostMapping(uri)
+//	public Chambre createChambre(@RequestBody Chambre chambre) {
+//		return rep.save(chambre);
+//	}
 	
 	@PutMapping(uri+"/{id}")
 	public Chambre updateChambre(@RequestBody Chambre newChambre, @PathVariable long id) {
@@ -61,14 +61,14 @@ public class ChambreController {
 				.orElseGet(() -> rep.save(newChambre));
 	}
 	
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/{id}")
-	public void deleteChambre(long id) throws ChambreException {
-		Chambre chambre = rep.findById(id)
-				.orElseThrow(() -> new ChambreException(
-						"Erreur: Chambre " + id + " introuvable"));
-		rep.delete(chambre);
-	}
+//	@ResponseStatus(HttpStatus.NO_CONTENT)
+//	@DeleteMapping(uri+"/{id}")
+//	public void deleteChambre(long id) throws ChambreException {
+//		Chambre chambre = rep.findById(id)
+//				.orElseThrow(() -> new ChambreException(
+//						"Erreur: Chambre " + id + " introuvable"));
+//		rep.delete(chambre);
+//	}
 	
 	@GetMapping(uri+"/{id}/reservations")
 	public List<Reservation> getReservationFromChambreId(@PathVariable Long id) {

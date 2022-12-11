@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,12 +17,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "agences")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Agence {
 	
 	@Id
@@ -31,6 +33,10 @@ public class Agence {
 	private double reduc;
 	private String login;
 	private String mdp;
+	
+	private ArrayList<String> hoteluris;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "agence", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Hotel> hotels;
 	
@@ -44,6 +50,7 @@ public class Agence {
 		this.login = login;
 		this.mdp = mdp;
 		this.hotels = hotels;
+		this.hoteluris = hotelsToURI(hotels);
 	}
 
 	public Long getId() {
@@ -92,6 +99,7 @@ public class Agence {
 	
 	public void setHotels(ArrayList<Hotel> hotels) {
 		this.hotels = hotels;
+		this.hoteluris = hotelsToURI(hotels);
 	}
 	
 	public Hotel getHotelById(long id) throws Exception {
@@ -101,6 +109,18 @@ public class Agence {
 			}
 		}
 		throw new Exception("Hotel d'ID " + Long.toString(id) + " introuvable");
+	}
+	
+	public ArrayList<String> hotelsToURI(ArrayList<Hotel> hotelarray) {
+		ArrayList<String> uris = new ArrayList<String>();
+		for(Hotel h: hotelarray) {
+			uris.add("agenceservice/api/hotels/" + h.getId());
+		}
+		return uris;
+	}
+	
+	public ArrayList<String> getHotelURIs() {
+		return hoteluris;
 	}
 
 	@Override

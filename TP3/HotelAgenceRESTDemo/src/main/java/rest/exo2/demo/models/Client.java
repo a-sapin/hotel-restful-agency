@@ -15,13 +15,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "clients")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Client {
 	
 	@Id
@@ -36,6 +37,9 @@ public class Client {
 	private LocalDate moisexpiration;
 	private int codesecurite;
 	
+	private ArrayList<String> reservationuris;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
 	
@@ -46,6 +50,7 @@ public class Client {
 		this.moisexpiration = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1);
 		this.codesecurite = -1;
 		this.reservations = new ArrayList<Reservation>();
+		this.reservationuris = new ArrayList<String>();
 	}
 	
 	public Long getId() {
@@ -102,6 +107,19 @@ public class Client {
 
 	public void setReservations(ArrayList<Reservation> reservations) {
 		this.reservations = reservations;
+		this.reservationuris = this.reservationsToURI(reservations);
+	}
+	
+	public ArrayList<String> reservationsToURI(ArrayList<Reservation> reservationarray) {
+		ArrayList<String> uris = new ArrayList<String>();
+		for(Reservation r: reservationarray) {
+			uris.add("agenceservice/api/reservations/" + r.getId());
+		}
+		return uris;
+	}
+	
+	public ArrayList<String> getReservationURIs() {
+		return reservationuris;
 	}
 
 	public void setBankCoords(String numerocarte, int monthexp, int yearexp, int code) {

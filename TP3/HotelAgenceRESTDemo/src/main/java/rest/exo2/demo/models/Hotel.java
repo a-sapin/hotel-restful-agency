@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -26,8 +27,8 @@ import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "hotels")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Hotel {
 	
 	@Id
@@ -45,9 +46,15 @@ public class Hotel {
 	
 	private int etoiles;
 	
+	private ArrayList<String> chambreuris;
+	
+	private ArrayList<String> reservationuris;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Chambre> chambres;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
 	
@@ -63,7 +70,9 @@ public class Hotel {
 		this.nom = nom;
 		this.etoiles = etoiles;
 		this.chambres = chambres;
+		this.chambreuris = this.chambresToURI(chambres);
 		this.reservations = new ArrayList<Reservation>();
+		this.reservationuris = new ArrayList<String>();
 		this.agence = agence;
 		
 		this.pays = this.ville = this.rue = this.lieudit = "";
@@ -92,22 +101,6 @@ public class Hotel {
 	}
 	public void setEtoiles(int etoiles) {
 		this.etoiles = etoiles;
-	}
-	
-	public List<Chambre> getChambres() {
-		return chambres;
-	}
-
-	public void setChambres(ArrayList<Chambre> chambres) {
-		this.chambres = chambres;
-	}
-	
-	public List<Reservation> getReservations() {
-		return reservations;
-	}
-	
-	public void setReservations(ArrayList<Reservation> reservations) {
-		this.reservations = reservations;
 	}
 	
 	public Agence getAgence() {
@@ -235,6 +228,48 @@ public class Hotel {
 
 	public void setGps(double[] gps) {
 		this.gps = gps;
+	}
+	
+	public List<Chambre> getChambres() {
+		return chambres;
+	}
+
+	public void setChambres(ArrayList<Chambre> chambres) {
+		this.chambres = chambres;
+		this.chambreuris = this.chambresToURI(chambres);
+	}
+	
+	public ArrayList<String> chambresToURI(ArrayList<Chambre> chambrearray) {
+		ArrayList<String> uris = new ArrayList<String>();
+		for(Chambre c: chambrearray) {
+			uris.add("agenceservice/api/chambres/" + c.getId());
+		}
+		return uris;
+	}
+	
+	public ArrayList<String> getChambreURIs() {
+		return chambreuris;
+	}
+	
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+	
+	public void setReservations(ArrayList<Reservation> reservations) {
+		this.reservations = reservations;
+		this.reservationuris = this.reservationsToURI(reservations);
+	}
+	
+	public ArrayList<String> reservationsToURI(ArrayList<Reservation> reservationarray) {
+		ArrayList<String> uris = new ArrayList<String>();
+		for(Reservation r: reservationarray) {
+			uris.add("agenceservice/api/reservations/" + r.getId());
+		}
+		return uris;
+	}
+	
+	public ArrayList<String> getReservationURIs() {
+		return reservationuris;
 	}
 
 	@Override

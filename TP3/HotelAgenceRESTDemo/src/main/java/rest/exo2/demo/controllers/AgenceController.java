@@ -42,11 +42,11 @@ public class AgenceController {
 						"ERR : Could not find Agency with that ID :"+id));
 	}
 	
-	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping(uri)
-	public Agence createAgence(@RequestBody Agence agence) {
-		return rep.save(agence);
-	}
+//	@ResponseStatus(HttpStatus.CREATED)
+//	@PostMapping(uri)
+//	public Agence createAgence(@RequestBody Agence agence) {
+//		return rep.save(agence);
+//	}
 	
 	@PutMapping(uri+"/{id}")
 	public Agence updateAgence(@RequestBody Agence newAgence, @PathVariable long id) {
@@ -62,14 +62,14 @@ public class AgenceController {
 				.orElseGet(() -> rep.save(newAgence));
 	}
 	
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@DeleteMapping(uri+"/{id}")
-	public void deleteAgence(@PathVariable long id) throws AgenceException {
-		Agence agence = rep.findById(id)
-				.orElseThrow(() -> new AgenceException(
-						"Erreur: agence " + id + " introuvable"));
-		rep.delete(agence);
-	}
+//	@ResponseStatus(HttpStatus.NO_CONTENT)
+//	@DeleteMapping(uri+"/{id}")
+//	public void deleteAgence(@PathVariable long id) throws AgenceException {
+//		Agence agence = rep.findById(id)
+//				.orElseThrow(() -> new AgenceException(
+//						"Erreur: agence " + id + " introuvable"));
+//		rep.delete(agence);
+//	}
 	
 	@GetMapping(uri+"/{id}/hotels")
 	public List<Hotel> getHotelFromAgencyId(@PathVariable Long id) {
