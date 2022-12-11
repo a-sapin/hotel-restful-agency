@@ -102,14 +102,14 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 	2. Consulter les offres:
 		- d'abord se connecter à une agence (via option 1.)
 		- lire l'input utilisateur pour plusieurs informations dont: nombre de lits, date de début de séjour, date de fin de séjour
-		- faire un get des chambres correspondantes
-		- afficher une liste d'offres (avec prix réduit par l'Agence), puis demander l'input utilisateur
+		- faire un get des Chambres correspondantes
+		- afficher une liste d'offres (prix: prixnuit Chambre * durée de séjour * réduc Agence), puis demander l'input utilisateur:
 		a) effectuer une réservation
-			- choisir l'offre proposée
+			- choisir l'Offre proposée
 			- lire l'input utilisateur pour créer un client de la Reservation: nom, prénom, numéro de carte, mois d'expiration, année d'expiration, code de sécurité
-			- envoyer la réservation (méthode put
+			- envoyer la réservation (méthode put)
 		b) trier les prix par ordre croissant
-			- à coder dans ce fichier: méthode de tri des offres
+			- à coder dans ce fichier: méthode de tri des Offres
 			- mettre en avant le prix le moins cher
 			- proposer de réserver (via option a))
 	*/
