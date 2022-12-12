@@ -82,7 +82,8 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 	@Override
 	protected boolean validServiceUrl() {
 		// TODO Auto-generated method stub
-		return false;
+		return SERVICE_URL.equals(
+				"http://localhost:8080/agenceservice/api");
 	}
 
 	@Override
