@@ -1,4 +1,4 @@
-package rest.exo2.demo.cli;
+package rest.exo2.demo.example;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +14,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import rest.exo2.demo.cli.AbstractMain;
+import rest.exo2.demo.cli.IntegerInputProcessor;
 
 @Component
 public class EmployeeRestClientCLI extends AbstractMain implements CommandLineRunner {
