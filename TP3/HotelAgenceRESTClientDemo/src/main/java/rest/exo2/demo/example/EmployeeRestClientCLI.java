@@ -85,8 +85,8 @@ public class EmployeeRestClientCLI extends AbstractMain implements CommandLineRu
 					String uri = URI_EMPLOYEES + "/count";
 					String countStr = proxy.getForObject(uri, String.class);
 					ObjectMapper mapper = new ObjectMapper();
-					long count = (int) mapper.readValue(countStr, Map.class).get("count");
-					System.out.println(String.format("There are %d employees", count));
+					String response = (String) mapper.readValue(countStr, Map.class).get("count");
+					//System.out.println(String.format("There are %d employees", count));
 					System.out.println();
 					break;
 				

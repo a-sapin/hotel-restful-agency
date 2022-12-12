@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import rest.exo2.demo.example.Employee;
@@ -64,7 +67,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 	protected void menu() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(QUIT+". Quit.");
-		builder.append("\n1. Get number of employees.");
+		builder.append("\n1. Count agencies.");
 		builder.append("\n2. Display all employees.");
 		builder.append("\n3. Get employee by ID");
 		builder.append("\n4. Add new employee");
@@ -81,7 +84,11 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 		try {
 			switch(userInput) {
 				case "1":
-					System.out.println("Testificate 1");
+					String uri = URI_AGENCES;
+					Agence[] result = proxy.getForObject(uri, Agence[].class);
+					System.out.println("Employees:");
+					Arrays.asList(result)
+					.forEach(System.out::println);
 					break;
 				case "2":
 					System.out.println("Testificate 2");
@@ -110,8 +117,8 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					System.err.println("Sorry, wrong input. Please try again.");
 					return;
 			} 
-		} catch (IOException e) {
-			e.printStackTrace();
+		//} catch (IOException e) {
+			//e.printStackTrace();
 		} catch (HttpClientErrorException e) {
 			System.err.println(e.getMessage());
 			System.err.println("Please try again with a different ID.");
