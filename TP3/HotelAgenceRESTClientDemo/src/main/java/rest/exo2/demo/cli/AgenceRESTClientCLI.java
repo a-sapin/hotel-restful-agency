@@ -35,7 +35,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 			inputReader = new BufferedReader(new InputStreamReader(System.in));
 			SERVICE_URL = inputReader.readLine(); //Using buffered reader input as value for SERVICE_URL
 			
-			URI_AGENCES = SERVICE_URL + "/employees";
+			URI_AGENCES = SERVICE_URL + "/agences";
 			URI_AGENCES_ID = URI_AGENCES + "/{id}";
 		} catch (IOException e) {
 			e.printStackTrace();

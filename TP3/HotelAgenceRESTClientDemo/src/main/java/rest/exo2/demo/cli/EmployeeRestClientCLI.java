@@ -55,7 +55,7 @@ public class EmployeeRestClientCLI extends AbstractMain implements CommandLineRu
 	@Override
 	protected boolean validServiceUrl() {
 		return SERVICE_URL.equals(
-				"http://localhost:8080/employeeservice/api");
+				"http://localhost:8080/agenceservice/api");
 	}
 
 	@Override
