@@ -97,6 +97,10 @@ public class Chambre {
 		return reservationuris;
 	}
 
+	public void setReservationuris(ArrayList<String> reservationuris) {
+		this.reservationuris = reservationuris;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(hotel, id, nblits, numero, prixnuit, reservations);

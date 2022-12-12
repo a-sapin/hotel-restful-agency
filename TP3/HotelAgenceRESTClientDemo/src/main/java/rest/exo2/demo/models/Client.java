@@ -106,6 +106,10 @@ public class Client {
 		return reservationuris;
 	}
 
+	public void setReservationuris(ArrayList<String> reservationuris) {
+		this.reservationuris = reservationuris;
+	}
+
 	public void setBankCoords(String numerocarte, int monthexp, int yearexp, int code) {
 		this.numerocarte = numerocarte; //format: XXXX-XXXX-XXXX-XXXX
 		this.moisexpiration = LocalDate.of(yearexp, monthexp, 1);

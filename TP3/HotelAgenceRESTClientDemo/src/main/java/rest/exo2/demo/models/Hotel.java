@@ -228,6 +228,10 @@ public class Hotel {
 		return chambreuris;
 	}
 	
+	public void setChambreuris(ArrayList<String> chambreuris) {
+		this.chambreuris = chambreuris;
+	}
+
 	public List<Reservation> getReservations() {
 		return reservations;
 	}
@@ -247,6 +251,10 @@ public class Hotel {
 	
 	public ArrayList<String> getReservationURIs() {
 		return reservationuris;
+	}
+	
+	public void setReservationuris(ArrayList<String> reservationuris) {
+		this.reservationuris = reservationuris;
 	}
 
 	@Override

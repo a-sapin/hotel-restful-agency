@@ -104,6 +104,10 @@ public class Agence {
 	public ArrayList<String> getHotelURIs() {
 		return hoteluris;
 	}
+	
+	public void setHotelURIs(ArrayList<String> uris) {
+		this.hoteluris = uris;
+	}
 
 	@Override
 	public int hashCode() {
