@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -29,6 +30,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 	private IntegerInputProcessor inputProcessor;
 	private static String URI_AGENCES; 
 	private static String URI_AGENCES_ID;
+	public Agence agency;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -41,6 +43,32 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 			setTestServiceUrl(inputReader);
 			URI_AGENCES = SERVICE_URL + "/agences";
 			URI_AGENCES_ID = URI_AGENCES + "/{id}"; 
+			
+			Boolean agencyFound = false;
+			System.out.println("\n[AGENCY WEBSERVICE]\n==============\nWelcome. You must log into your agency.");
+			
+			while (!agencyFound)
+			{
+
+				Scanner scanReader = new Scanner(System.in);
+				System.out.println("Please enter your login information:");
+				String log = scanReader.nextLine();
+				System.out.println("Please enter your password:");
+				String pswd = scanReader.nextLine();
+				
+				Agence[] resultAg = proxy.getForObject(URI_AGENCES, Agence[].class);
+	
+				
+				for (int i=0; i<resultAg.length; i++)
+				{
+					if (resultAg[i].getLogin().equals(log) && resultAg[i].getMdp().equals(pswd))
+					{
+						agencyFound = true;
+						System.out.println("Successful connection Agency "+resultAg[i].getNom());
+					}
+				}
+				if (agencyFound==false) System.out.println("No agency was found, please try again.\n");
+			}
 			
 			do {
 				menu();
@@ -68,7 +96,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 		StringBuilder builder = new StringBuilder();
 		builder.append(QUIT+". Quit.");
 		builder.append("\n1. Count agencies.");
-		builder.append("\n2. Display all employees.");
+		builder.append("\n2. Connect to agency using Login/PSWD.");
 		builder.append("\n3. Get employee by ID");
 		builder.append("\n4. Add new employee");
 		builder.append("\n5. Remove employee by ID");
@@ -85,13 +113,34 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 			switch(userInput) {
 				case "1":
 					String uri = URI_AGENCES;
-					Agence[] result = proxy.getForObject(uri, Agence[].class);
-					System.out.println("Employees:");
-					Arrays.asList(result)
+					Agence[] resultAg = proxy.getForObject(uri, Agence[].class);
+					System.out.println(":");
+					Arrays.asList(resultAg)
 					.forEach(System.out::println);
 					break;
 				case "2":
 					System.out.println("Testificate 2");
+					Scanner scanReader = new Scanner(System.in);
+					System.out.println("Please enter your login information:");
+					String log = scanReader.nextLine();
+					System.out.println("Please enter your password:");
+					String pswd = scanReader.nextLine();
+					
+					uri = URI_AGENCES;
+					resultAg = proxy.getForObject(uri, Agence[].class);
+					Boolean agencyFound = false;
+					
+					for (int i=0; i<resultAg.length; i++)
+					{
+						if (resultAg[i].getLogin().equals(log) && resultAg[i].getMdp().equals(pswd))
+						{
+							agencyFound = true;
+							System.out.println("Successful connection Agency "+resultAg[i].getNom());
+						}
+					}
+					if (agencyFound==false) System.out.println("No agency was found, please try again.");
+					
+					
 					break;
 				case "3":
 					System.out.println("Testificate 3");
