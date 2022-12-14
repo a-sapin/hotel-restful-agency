@@ -237,9 +237,22 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 								System.out.println("Surname : ");
 								String sn = textRead.nextLine();
 								Client cl = new Client(nc, sn);
-								Reservation resFin = new Reservation(retenue, cl, debut, fin, retenue.getHotel());
 								String createURI = "http://localhost:8080/" + "agenceservice/api/clients";
 								proxy.postForObject(createURI, cl, Reservation.class);
+
+								//Fetch the created client online to get its webDB ID
+								Client[] arrayCli = proxy.getForObject(createURI, Client[].class);
+								for (int z=0; z<arrayCli.length; z++)
+								{
+									Client cur = arrayCli[z];
+									if ((cur.getPrenom().equals(cl.getPrenom()) && (cur.getNom().equals(cl.getNom()))))
+									{
+										cl = cur;
+										z = z + arrayCli.length;
+									}
+								}
+								
+								Reservation resFin = new Reservation(retenue, cl, debut, fin, retenue.getHotel());
 								createURI = "http://localhost:8080/" + "agenceservice/api/reservations";
 								proxy.postForObject(createURI, resFin, Reservation.class);
 							}
