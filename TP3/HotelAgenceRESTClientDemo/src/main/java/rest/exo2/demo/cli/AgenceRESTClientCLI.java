@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 //import rest.exo2.demo.example.Employee;
 import rest.exo2.demo.models.Agence;
+import rest.exo2.demo.models.Chambre;
 import rest.exo2.demo.models.Hotel;
 
 @Component
@@ -129,6 +131,18 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					Hotel[] hotArray = proxy.getForObject(AGENCE_CHOISIE, Hotel[].class);
 					Arrays.asList(hotArray)
 					.forEach(System.out::println);
+					
+					LinkedList<Chambre> roomList = new LinkedList<Chambre>();
+					for (int i=0; i<hotArray.length; i++)
+					{
+						for (int a=0; a<hotArray[i].getChambreURIs().size(); a++)
+						{
+							String roomURI = "http://localhost:8080/";
+							roomURI = roomURI + hotArray[i].getChambreURIs().get(a);
+							System.out.println("\tDEBUG : reaching out to GET "+roomURI);
+							roomList.add(proxy.getForObject(roomURI, Chambre.class));
+						}
+					}
 					
 					
 					
