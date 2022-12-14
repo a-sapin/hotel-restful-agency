@@ -106,12 +106,8 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 	protected void menu() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(QUIT+". Quit.");
-		builder.append("\n1. Count agencies.");
-		builder.append("\n2. Fetch all hotels.");
-		builder.append("\n3. Get employee by ID");
-		builder.append("\n4. Add new employee");
-		builder.append("\n5. Remove employee by ID");
-		builder.append("\n6. Update existing employee");
+		builder.append("\n1. Display agencies");
+		builder.append("\n2. Make a booking");
 		
 		System.out.println(builder);
 	}
@@ -130,7 +126,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					.forEach(System.out::println);
 					break;
 				case "2":
-					System.out.println("Fetching all hotels of the agency.\n");
+					System.out.println("Our agency is partner of those hotels!\n");
 					String AGENCE_CHOISIE = URI_AGENCES + "/" + agencyID + "/hotels";
 					Hotel[] hotArray = proxy.getForObject(AGENCE_CHOISIE, Hotel[].class);
 					Arrays.asList(hotArray)
@@ -139,36 +135,36 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					LinkedList<Chambre> roomList = new LinkedList<Chambre>();
 					for (int i=0; i<hotArray.length; i++)
 					{
-						System.out.println("DEBUG : hotel "+hotArray[i].getNom());
+						//System.out.println("DEBUG : hotel "+hotArray[i].getNom());
 						for (int a=0; a<hotArray[i].getChambreURIs().size(); a++)
 						{
 							String roomURI = "http://localhost:8080/";
 							roomURI = roomURI + hotArray[i].getChambreURIs().get(a);
-							System.out.println("\tDEBUG : reaching out to GET "+roomURI);
+							//System.out.println("\tDEBUG : reaching out to GET "+roomURI);
 							roomList.add(proxy.getForObject(roomURI, Chambre.class));
 						}
 					}
 					
-					System.out.println("DEBUG : Liste de chambres terminée, affinage ensuite");
+					//System.out.println("DEBUG : Liste de chambres terminée, affinage ensuite");
 					Scanner input = new Scanner(System.in);
 					
-					System.out.println("\nEntrez votre date de début de séjour à l'hôtel:");
-					System.out.print("Jour: ");
+					System.out.println("\nPlease tell us when you're planning to arrive:");
+					System.out.print("Day: ");
 					int jd = input.nextInt();
-					System.out.print("Mois: ");
+					System.out.print("Month: ");
 					int md = input.nextInt();
-					System.out.print("Année: ");
+					System.out.print("Year: ");
 					int ad = input.nextInt();
 					LocalDate debut = LocalDate.of(ad, md, jd);
-					System.out.println("Entrez votre date de fin de séjour à l'hôtel:");
-					System.out.print("Jour: ");
+					System.out.println("When shall you leave?");
+					System.out.print("Day: ");
 					int jf = input.nextInt();
-					System.out.print("Mois: ");
+					System.out.print("Month: ");
 					int mf = input.nextInt();
-					System.out.print("Année: ");
+					System.out.print("Year: ");
 					int af = input.nextInt();
 					LocalDate fin = LocalDate.of(af, mf, jf);
-					System.out.print("Entrez le nombre de personnes qu'accueillera la chambre: ");
+					System.out.print("For how many people are you booking? ");
 					int nbpersonnes = input.nextInt();
 					String debutstring = debut.toString();
 					String finstring = fin.toString();
@@ -191,7 +187,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 							LinkedList<Reservation> resList = new LinkedList<Reservation>();
 							for (String ru : r.getReservationURIs()) {
 								//Add reservation fetched at that address
-								System.out.println("\tDEBUG : found reservation " + resURI + ru);
+								//System.out.println("\tDEBUG : found reservation " + resURI + ru);
 								resList.add(proxy.getForObject(resURI + ru, Reservation.class));
 							}
 	
@@ -310,11 +306,14 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 								//Trying to update the Room
 								//retenue.getReservations().add(resFin);
 								String resIDURI = "http://localhost:8080/" + "agenceservice/api/chambres/" + retenue.getId();
-								retenue.getReservationURIs().add(resIDURI);
+								String shortndURI = "agenceservice/api/chambres/" + retenue.getId();
+								retenue.getReservationURIs().add(shortndURI);
 								//System.out.println(retenue.getReservationURIs().isEmpty());
 								retenue.setNblits(300);
 								
 								proxy.put(resIDURI, retenue);
+								
+								System.err.println("\nThe booking is confirmed and saved to the database! Have a good stay :)\n");
 							}
 							
 						}
@@ -324,22 +323,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 				
 				
 				break;
-				case "3":
-					System.out.println("Testificate 3");
-					break;
-					
-				case "4":
-					System.out.println("Testificate 4");
-					break;
-					
-				case "5":
-					System.out.println("Testificate 5");
-					break;
-					
-				case "6":
-					System.out.println("Testificate 6");
-					break;
-					
+				
 				case QUIT:
 					System.out.println("Bye...");
 					System.exit(0);
