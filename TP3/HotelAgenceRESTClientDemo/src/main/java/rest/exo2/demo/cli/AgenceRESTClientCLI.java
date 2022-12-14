@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 //import rest.exo2.demo.example.Employee;
 import rest.exo2.demo.models.Agence;
 import rest.exo2.demo.models.Chambre;
+import rest.exo2.demo.models.Client;
 import rest.exo2.demo.models.Hotel;
 import rest.exo2.demo.models.Reservation;
 
@@ -218,6 +219,29 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 								System.out.println(price + " € for " + ChronoUnit.DAYS.between(debut, fin) + " days, with "
 										+ agency.getReduc() * 100 + "% off");
 							}
+							
+							System.out.println("Please enter now the ID of the room you would like to book.");
+							long choice = input.nextInt();
+							Chambre retenue = null;
+							for (Chambre ret : shortList)
+							{
+								if (ret.getId().equals(choice)) retenue = ret;
+							}
+							if (retenue == null) System.err.println("Sorry, but we couldn't find the room you specified.");
+							else
+							{
+								Scanner textRead = new Scanner(System.in);
+								System.out.println("Who's going to stay in that room?");
+								System.out.println("Name : ");
+								String nc = textRead.nextLine();
+								System.out.println("Surname : ");
+								String sn = textRead.nextLine();
+								Client cl = new Client(nc, sn);
+								Reservation resFin = new Reservation(retenue, cl, debut, fin, retenue.getHotel());
+								String createURI = "http://localhost:8080/" + "agenceservice/api/reservations/" + resFin.getId();
+								proxy.put(createURI, resFin);
+							}
+							
 						}
 						else System.err.println("We're very sorry, but we didn't find any rooms matching your requirements.");
 						

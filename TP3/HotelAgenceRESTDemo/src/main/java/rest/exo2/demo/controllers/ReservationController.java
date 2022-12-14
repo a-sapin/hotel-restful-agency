@@ -42,19 +42,19 @@ public class ReservationController {
 		return rep.save(reservation);
 	}
 	
-//	@PutMapping(uri+"reservations/{id}")
-//	public Reservation updateReservation(@RequestBody Reservation newReservation, @PathVariable long id) {
-//		return rep.findById(id)
-//				.map(reservation -> {
-//					reservation.setChambre(newReservation.getChambre());
-//					reservation.setClient(newReservation.getClient());
-//					reservation.setArrivee(newReservation.getArrivee());
-//					reservation.setDepart(newReservation.getDepart());
-//					reservation.setHotel(newReservation.getHotel());
-//					return rep.save(reservation);
-//				})
-//				.orElseGet(() -> rep.save(newReservation));
-//	}
+	@PutMapping(uri+"reservations/{id}")
+	public Reservation updateReservation(@RequestBody Reservation newReservation, @PathVariable long id) {
+		return rep.findById(id)
+				.map(reservation -> {
+					reservation.setChambre(newReservation.getChambre());
+					reservation.setClient(newReservation.getClient());
+					reservation.setArrivee(newReservation.getArrivee());
+					reservation.setDepart(newReservation.getDepart());
+					reservation.setHotel(newReservation.getHotel());
+					return rep.save(reservation);
+				})
+				.orElseGet(() -> rep.save(newReservation));
+	}
 	
 //	@ResponseStatus(HttpStatus.NO_CONTENT)
 //	@DeleteMapping(uri+"/{id}")
