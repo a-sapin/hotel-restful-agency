@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 //import rest.exo2.demo.example.Employee;
 import rest.exo2.demo.models.Agence;
+import rest.exo2.demo.models.Hotel;
 
 @Component
 public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunner {
@@ -31,6 +32,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 	private static String URI_AGENCES; 
 	private static String URI_AGENCES_ID;
 	public Agence agency;
+	public String agencyID;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -64,7 +66,10 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					if (resultAg[i].getLogin().equals(log) && resultAg[i].getMdp().equals(pswd))
 					{
 						agencyFound = true;
-						System.out.println("Successful connection Agency "+resultAg[i].getNom());
+						agency = resultAg[i];
+						agencyID = agency.getId().toString();
+						System.out.println("Successful connection to Agency "+resultAg[i].getNom()+" #"+agencyID);
+						
 					}
 				}
 				if (agencyFound==false) System.out.println("No agency was found, please try again.\n");
@@ -96,7 +101,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 		StringBuilder builder = new StringBuilder();
 		builder.append(QUIT+". Quit.");
 		builder.append("\n1. Count agencies.");
-		builder.append("\n2. Connect to agency using Login/PSWD.");
+		builder.append("\n2. Fetch all hotels.");
 		builder.append("\n3. Get employee by ID");
 		builder.append("\n4. Add new employee");
 		builder.append("\n5. Remove employee by ID");
@@ -119,26 +124,12 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					.forEach(System.out::println);
 					break;
 				case "2":
-					System.out.println("Testificate 2");
-					Scanner scanReader = new Scanner(System.in);
-					System.out.println("Please enter your login information:");
-					String log = scanReader.nextLine();
-					System.out.println("Please enter your password:");
-					String pswd = scanReader.nextLine();
+					System.out.println("Fetching all hotels of the agency.\n");
+					String AGENCE_CHOISIE = URI_AGENCES + "/" + agencyID + "/hotels";
+					Hotel[] hotArray = proxy.getForObject(AGENCE_CHOISIE, Hotel[].class);
+					Arrays.asList(hotArray)
+					.forEach(System.out::println);
 					
-					uri = URI_AGENCES;
-					resultAg = proxy.getForObject(uri, Agence[].class);
-					Boolean agencyFound = false;
-					
-					for (int i=0; i<resultAg.length; i++)
-					{
-						if (resultAg[i].getLogin().equals(log) && resultAg[i].getMdp().equals(pswd))
-						{
-							agencyFound = true;
-							System.out.println("Successful connection Agency "+resultAg[i].getNom());
-						}
-					}
-					if (agencyFound==false) System.out.println("No agency was found, please try again.");
 					
 					
 					break;
