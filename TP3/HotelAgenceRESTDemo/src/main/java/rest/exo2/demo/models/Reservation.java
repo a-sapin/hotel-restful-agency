@@ -43,6 +43,10 @@ public class Reservation {
 	@JoinColumn(name = "hotel_id", nullable = false)
 	private Hotel hotel;
 	
+	public Reservation() {
+		
+	}
+	
 	public Reservation(Chambre ch, Client cl, LocalDate from, LocalDate to, Hotel h) {
 		this.chambre = ch;
 		this.client = cl;
