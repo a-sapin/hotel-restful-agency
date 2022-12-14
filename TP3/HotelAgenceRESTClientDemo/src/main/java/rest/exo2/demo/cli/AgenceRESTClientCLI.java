@@ -173,43 +173,58 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					String finstring = fin.toString();
 					//==============
 					
-					LinkedList<Chambre> shortList = new LinkedList<Chambre>();
-					for (Chambre r : roomList)
+					Boolean validChoices = true;
+					
+					if (!(fin.isAfter(debut)))
 					{
-						System.out.println("DEBUG : looking at room "+r.getNumero());
-						String resURI = "http://localhost:8080/";
-						LinkedList<Reservation> resList = new LinkedList<Reservation>();
-						for (String ru : r.getReservationURIs())
-						{
-							//Add reservation fetched at that address
-							System.out.println("\tDEBUG : found reservation "+resURI+ru);
-							resList.add(proxy.getForObject(resURI+ru, Reservation.class));
-						}
-						
-						//Look up all the reservations that we added
-						Boolean available = true;
-						for (Reservation rs : resList)
-						{
-							if(!((debut.isBefore(rs.getArrivee()) && fin.isBefore(rs.getArrivee())) || (debut.isAfter(rs.getDepart()) && fin.isAfter(rs.getDepart()))))
-								available = false;
-						}
-						
-						if (available) shortList.add(r);
+						validChoices = false;
+						System.err.println("Sorry, it looks like you've entered wrong dates. Try again.");
 					}
 					
-					System.out.println("=RESULT= We found "+shortList.size()+" available rooms for you!");
-					for (Chambre f : shortList)
+					if (validChoices) 
 					{
-						System.out.print(f.toString()+" : ");
-						double coef = 1-agency.getReduc();
-						double price = f.getPrixnuit()*ChronoUnit.DAYS.between(debut, fin)*coef;
-						System.out.println(price+" € for "+ChronoUnit.DAYS.between(debut, fin)+" days, with "+agency.getReduc()*100+"% off");
+						LinkedList<Chambre> shortList = new LinkedList<Chambre>();
+						for (Chambre r : roomList) {
+							System.out.println("DEBUG : looking at room " + r.getNumero());
+							String resURI = "http://localhost:8080/";
+							LinkedList<Reservation> resList = new LinkedList<Reservation>();
+							for (String ru : r.getReservationURIs()) {
+								//Add reservation fetched at that address
+								System.out.println("\tDEBUG : found reservation " + resURI + ru);
+								resList.add(proxy.getForObject(resURI + ru, Reservation.class));
+							}
+	
+							//Look up all the reservations that we added
+							Boolean available = true;
+							for (Reservation rs : resList) {
+								if (!((debut.isBefore(rs.getArrivee()) && fin.isBefore(rs.getArrivee()))
+										|| (debut.isAfter(rs.getDepart()) && fin.isAfter(rs.getDepart()))))
+									available = false;
+							}
+							
+							if (nbpersonnes>r.getNblits()) available = false;
+							if (available)
+								shortList.add(r);
+						}
+						
+						if (!(shortList.isEmpty()))
+						{
+							System.out.println("=RESULT= We found " + shortList.size() + " available rooms for you!");
+							for (Chambre f : shortList) 
+							{
+								System.out.print(f.toString() + " : ");
+								double coef = 1 - agency.getReduc();
+								double price = f.getPrixnuit() * ChronoUnit.DAYS.between(debut, fin) * coef;
+								System.out.println(price + " € for " + ChronoUnit.DAYS.between(debut, fin) + " days, with "
+										+ agency.getReduc() * 100 + "% off");
+							}
+						}
+						else System.err.println("We're very sorry, but we didn't find any rooms matching your requirements.");
+						
 					}
-					
-					
-					
-					
-					break;
+				
+				
+				break;
 				case "3":
 					System.out.println("Testificate 3");
 					break;
