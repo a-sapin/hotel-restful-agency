@@ -350,28 +350,5 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 			e1.printStackTrace();
 		}
 	}
-	
-	/*
-	Voir les fichiers dans le package rest.exo2.demo.cli pour un exemple plus parlant
-	
-	Idée de conception pour le client (options de menu):
-	1. Se connecter à une agence:
-		- faire un get d'Agence selon login et mdp
-		- si pas d'Agence trouvée retour au menu
-		- sinon on garde l'id de l'Agence dans une variable
-	2. Consulter les offres:
-		- d'abord se connecter à une agence (via option 1.)
-		- lire l'input utilisateur pour plusieurs informations dont: nombre de lits, date de début de séjour, date de fin de séjour
-		- faire un get des Chambres correspondantes
-		- afficher une liste d'offres (prix: prixnuit Chambre * durée de séjour * réduc Agence), puis demander l'input utilisateur:
-		a) effectuer une réservation
-			- choisir l'Offre proposée
-			- lire l'input utilisateur pour créer un client de la Reservation: nom, prénom, numéro de carte, mois d'expiration, année d'expiration, code de sécurité
-			- envoyer la réservation (méthode put)
-		b) trier les prix par ordre croissant
-			- à coder dans ce fichier: méthode de tri des Offres
-			- mettre en avant le prix le moins cher
-			- proposer de réserver (via option a))
-	*/
 
 }
