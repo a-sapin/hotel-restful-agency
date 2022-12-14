@@ -313,7 +313,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 								
 								proxy.put(resIDURI, retenue);
 								
-								System.err.println("\nThe booking is confirmed and saved to the database! Have a good stay :)\n");
+								System.out.println("\nThe booking is confirmed and saved to the database! Have a good stay :)\n");
 							}
 							
 						}
