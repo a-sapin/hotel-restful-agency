@@ -3,6 +3,7 @@ package rest.exo2.demo.cli;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import rest.exo2.demo.models.Agence;
 import rest.exo2.demo.models.Chambre;
 import rest.exo2.demo.models.Hotel;
+import rest.exo2.demo.models.Reservation;
 
 @Component
 public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunner {
@@ -135,6 +137,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					LinkedList<Chambre> roomList = new LinkedList<Chambre>();
 					for (int i=0; i<hotArray.length; i++)
 					{
+						System.out.println("DEBUG : hotel "+hotArray[i].getNom());
 						for (int a=0; a<hotArray[i].getChambreURIs().size(); a++)
 						{
 							String roomURI = "http://localhost:8080/";
@@ -143,6 +146,59 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 							roomList.add(proxy.getForObject(roomURI, Chambre.class));
 						}
 					}
+					
+					System.out.println("DEBUG : Liste de chambres terminée, affinage ensuite");
+					Scanner input = new Scanner(System.in);
+					
+					System.out.println("\nEntrez votre date de début de séjour à l'hôtel:");
+					System.out.print("Jour: ");
+					int jd = input.nextInt();
+					System.out.print("Mois: ");
+					int md = input.nextInt();
+					System.out.print("Année: ");
+					int ad = input.nextInt();
+					LocalDate debut = LocalDate.of(ad, md, jd);
+					System.out.println("Entrez votre date de fin de séjour à l'hôtel:");
+					System.out.print("Jour: ");
+					int jf = input.nextInt();
+					System.out.print("Mois: ");
+					int mf = input.nextInt();
+					System.out.print("Année: ");
+					int af = input.nextInt();
+					LocalDate fin = LocalDate.of(af, mf, jf);
+					System.out.print("Entrez le nombre de personnes qu'accueillera la chambre: ");
+					int nbpersonnes = input.nextInt();
+					String debutstring = debut.toString();
+					String finstring = fin.toString();
+					//==============
+					
+					LinkedList<Chambre> shortList = new LinkedList<Chambre>();
+					for (Chambre r : roomList)
+					{
+						System.out.println("DEBUG : looking at room "+r.getNumero());
+						String resURI = "http://localhost:8080/";
+						LinkedList<Reservation> resList = new LinkedList<Reservation>();
+						for (String ru : r.getReservationURIs())
+						{
+							//Add reservation fetched at that address
+							System.out.println("\tDEBUG : found reservation "+resURI+ru);
+							resList.add(proxy.getForObject(resURI+ru, Reservation.class));
+						}
+						
+						//Look up all the reservations that we added
+						Boolean available = true;
+						for (Reservation rs : resList)
+						{
+							if(!((debut.isBefore(rs.getArrivee()) && fin.isBefore(rs.getArrivee())) || (debut.isAfter(rs.getDepart()) && fin.isAfter(rs.getDepart()))))
+								available = false;
+						}
+						
+						if (available) shortList.add(r);
+					}
+					
+					System.out.println("=RESULT= We found "+shortList.size()+" available rooms for you!");
+					
+					
 					
 					
 					
