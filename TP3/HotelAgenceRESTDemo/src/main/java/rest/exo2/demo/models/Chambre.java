@@ -117,6 +117,10 @@ public class Chambre {
 	public ArrayList<String> getReservationURIs() {
 		return reservationuris;
 	}
+	
+	public void setReservationURIs(ArrayList<String> reservationuris) {
+		this.reservationuris = reservationuris;
+	}
 
 	@Override
 	public int hashCode() {

@@ -281,6 +281,14 @@ public class Hotel {
 				+ Objects.hash(agence, chambres, etoiles, id, lieudit, nom, numero, pays, reservations, rue, ville);
 		return result;
 	}
+	
+	public void setChambreURIs(ArrayList<String> chambreuris) {
+		this.chambreuris = chambreuris;
+	}
+	
+	public void setReservationURIs(ArrayList<String> reservationuris) {
+		this.reservationuris = reservationuris;
+	}
 
 	@Override
 	public boolean equals(Object obj) {

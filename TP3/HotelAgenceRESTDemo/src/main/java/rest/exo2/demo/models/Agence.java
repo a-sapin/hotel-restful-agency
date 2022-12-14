@@ -143,6 +143,10 @@ public class Agence {
 				&& Double.doubleToLongBits(reduc) == Double.doubleToLongBits(other.reduc);
 	}
 	
+	public void setHotelURIs(ArrayList<String> uris) {
+		this.hoteluris = uris;
+	}
+	
 	@Override
 	public String toString() {
 		return Long.toString(id) + ": " + nom + ", réduction de " + Double.toString(100*reduc) +"% (login: " + login + "; mdp: " + mdp + ")";

@@ -106,7 +106,7 @@ public class Client {
 		return reservationuris;
 	}
 
-	public void setReservationuris(ArrayList<String> reservationuris) {
+	public void setReservationURIs(ArrayList<String> reservationuris) {
 		this.reservationuris = reservationuris;
 	}
 

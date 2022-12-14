@@ -238,8 +238,10 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 								String sn = textRead.nextLine();
 								Client cl = new Client(nc, sn);
 								Reservation resFin = new Reservation(retenue, cl, debut, fin, retenue.getHotel());
-								String createURI = "http://localhost:8080/" + "agenceservice/api/reservations/" + resFin.getId();
-								proxy.put(createURI, resFin);
+								String createURI = "http://localhost:8080/" + "agenceservice/api/clients";
+								proxy.postForObject(createURI, cl, Reservation.class);
+								createURI = "http://localhost:8080/" + "agenceservice/api/reservations";
+								proxy.postForObject(createURI, resFin, Reservation.class);
 							}
 							
 						}

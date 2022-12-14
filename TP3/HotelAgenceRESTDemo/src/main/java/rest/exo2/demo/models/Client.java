@@ -43,6 +43,11 @@ public class Client {
 	@OneToMany(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Reservation> reservations;
 	
+	public Client()
+	{
+		
+	}
+	
 	public Client(String nom, String prenom) {
 		this.nom = nom;
 		this.prenom = prenom;
@@ -120,6 +125,10 @@ public class Client {
 	
 	public ArrayList<String> getReservationURIs() {
 		return reservationuris;
+	}
+	
+	public void setReservationURIs(ArrayList<String> reservationuris) {
+		this.reservationuris = reservationuris;
 	}
 
 	public void setBankCoords(String numerocarte, int monthexp, int yearexp, int code) {

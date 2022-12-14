@@ -28,18 +28,18 @@ public class Reservation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne//(cascade = CascadeType.ALL)
 	@JoinColumn(name = "chambre_id", nullable = false)
 	private Chambre chambre;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne//(cascade = CascadeType.ALL)
 	@JoinColumn(name = "client_id", nullable = false)
 	private Client client;
 	
 	private LocalDate arrivee;
 	private LocalDate depart;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne//(cascade = CascadeType.ALL)
 	@JoinColumn(name = "hotel_id", nullable = false)
 	private Hotel hotel;
 	
