@@ -228,7 +228,7 @@ public class Hotel {
 		return chambreuris;
 	}
 	
-	public void setChambreuris(ArrayList<String> chambreuris) {
+	public void setChambreURIs(ArrayList<String> chambreuris) {
 		this.chambreuris = chambreuris;
 	}
 
@@ -253,7 +253,7 @@ public class Hotel {
 		return reservationuris;
 	}
 	
-	public void setReservationuris(ArrayList<String> reservationuris) {
+	public void setReservationURIs(ArrayList<String> reservationuris) {
 		this.reservationuris = reservationuris;
 	}
 
