@@ -220,7 +220,38 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 										+ agency.getReduc() * 100 + "% off");
 							}
 							
-							System.out.println("Please enter now the ID of the room you would like to book.");
+							Thread.sleep(2500);
+							System.out.println("\nThis list will be sorted by our comparator service to ensure you get the best deals!\n");
+							Thread.sleep(2000);
+							int OPS = 1;
+							while (OPS>0)
+							{
+								OPS=0;
+								for (int u=0; u<shortList.size(); u++)
+								{
+									if(u>0)
+									{
+										if (shortList.get(u).getPrixnuit()<shortList.get(u-1).getPrixnuit())
+										{
+											Chambre remember = shortList.get(u-1);
+											shortList.set(u-1, shortList.get(u));
+											shortList.set(u, remember);
+											OPS=5;
+										}
+									}
+								}
+							}
+							
+							for (Chambre f : shortList) 
+							{
+								System.out.print("\t"+f.toString() + " : ");
+								double coef = 1 - agency.getReduc();
+								double price = f.getPrixnuit() * ChronoUnit.DAYS.between(debut, fin) * coef;
+								System.out.println(price + " €");
+							}
+							
+							
+							System.out.println("\nPlease enter now the ID of the room you would like to book.");
 							long choice = input.nextInt();
 							Chambre retenue = null;
 							for (Chambre ret : shortList)
@@ -322,6 +353,9 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 		} catch (HttpClientErrorException e) {
 			System.err.println(e.getMessage());
 			System.err.println("Please try again with a different ID.");
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 	

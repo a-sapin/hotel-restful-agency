@@ -118,8 +118,13 @@ public class Chambre {
 		return reservationuris;
 	}
 	
-	public void setReservationURIs(ArrayList<String> reservationuris) {
-		this.reservationuris = reservationuris;
+	public void setReservationURIs(ArrayList<String> reservation) {
+		ArrayList<String> res = new ArrayList<String>();
+		for (int i=0; i<reservation.size(); i++)
+		{
+			res.add(reservation.get(i));
+		}
+		this.reservationuris = res;
 	}
 
 	@Override
