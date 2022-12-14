@@ -10,6 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -197,7 +198,13 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					}
 					
 					System.out.println("=RESULT= We found "+shortList.size()+" available rooms for you!");
-					
+					for (Chambre f : shortList)
+					{
+						System.out.print(f.toString()+" : ");
+						double coef = 1-agency.getReduc();
+						double price = f.getPrixnuit()*ChronoUnit.DAYS.between(debut, fin)*coef;
+						System.out.println(price+" € for "+ChronoUnit.DAYS.between(debut, fin)+" days, with "+agency.getReduc()*100+"% off");
+					}
 					
 					
 					
