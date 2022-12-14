@@ -306,12 +306,20 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 								//Trying to update the Room
 								//retenue.getReservations().add(resFin);
 								String resIDURI = "http://localhost:8080/" + "agenceservice/api/chambres/" + retenue.getId();
-								String shortndURI = "agenceservice/api/chambres/" + retenue.getId();
+								String shortndURI = "agenceservice/api/reservations/" + resFin.getId();
 								retenue.getReservationURIs().add(shortndURI);
 								//System.out.println(retenue.getReservationURIs().isEmpty());
-								retenue.setNblits(300);
 								
 								proxy.put(resIDURI, retenue);
+								cl.getReservationURIs().add(shortndURI);
+								resIDURI = "http://localhost:8080/" + "agenceservice/api/clients/" + cl.getId();
+								proxy.put(resIDURI, cl);
+								
+								Hotel hot = retenue.getHotel();
+								hot.getReservationURIs().add(shortndURI);
+								resIDURI = "http://localhost:8080/" + "agenceservice/api/hotels/" + hot.getId();
+								proxy.put(resIDURI, hot);
+								
 								
 								System.out.println("\nThe booking is confirmed and saved to the database! Have a good stay :)\n");
 							}

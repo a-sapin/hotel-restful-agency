@@ -56,7 +56,7 @@ public class ClientController {
 					client.setNumerocarte(newClient.getNumerocarte());
 					client.setMoisexpiration(newClient.getMoisexpiration());
 					client.setCodesecurite(newClient.getCodesecurite());
-					client.setReservations((ArrayList<Reservation>)newClient.getReservations());
+					client.setReservationURIs(newClient.getReservationURIs());
 					return rep.save(client);
 				})
 				.orElseGet(() -> rep.save(newClient));

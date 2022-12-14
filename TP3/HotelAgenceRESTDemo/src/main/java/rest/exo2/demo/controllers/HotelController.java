@@ -63,8 +63,8 @@ public class HotelController {
 					hotel.setLieudit(newHotel.getLieudit());
 					hotel.setGps(newHotel.getGps());
 					hotel.setEtoiles(newHotel.getEtoiles());
-					hotel.setChambres((ArrayList<Chambre>)newHotel.getChambres());
-					hotel.setReservations((ArrayList<Reservation>)newHotel.getReservations());
+					//hotel.setChambres((ArrayList<Chambre>)newHotel.getChambres());
+					hotel.setReservationURIs(newHotel.getReservationURIs());
 					hotel.setAgence(newHotel.getAgence());
 					return rep.save(hotel);
 				})
