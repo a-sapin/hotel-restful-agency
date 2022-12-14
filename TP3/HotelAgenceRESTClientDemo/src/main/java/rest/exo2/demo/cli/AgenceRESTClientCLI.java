@@ -186,7 +186,7 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 					{
 						LinkedList<Chambre> shortList = new LinkedList<Chambre>();
 						for (Chambre r : roomList) {
-							System.out.println("DEBUG : looking at room " + r.getNumero());
+							//System.out.println("DEBUG : looking at room " + r.getNumero());
 							String resURI = "http://localhost:8080/";
 							LinkedList<Reservation> resList = new LinkedList<Reservation>();
 							for (String ru : r.getReservationURIs()) {
@@ -255,6 +255,35 @@ public class AgenceRESTClientCLI extends AbstractMain implements CommandLineRunn
 								Reservation resFin = new Reservation(retenue, cl, debut, fin, retenue.getHotel());
 								createURI = "http://localhost:8080/" + "agenceservice/api/reservations";
 								proxy.postForObject(createURI, resFin, Reservation.class);
+								
+								//Fetch the created reservation online to get its webDB ID
+								try {
+									Thread.sleep(200);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								} //wait for item to be added to server
+								
+								Reservation[] arrayRes = proxy.getForObject(createURI, Reservation[].class);
+								for (int y=0; y<arrayRes.length; y++)
+								{
+									//System.out.println("\tDEBUG ITERATION "+y);
+									Reservation curt = arrayRes[y];
+									curt.toString();
+									if (resFin.getClient().getNom().equals(curt.getClient().getNom()))
+									{
+										resFin = curt;
+										y = y + arrayRes.length;
+									}
+								}
+								
+								//Trying to update the Room
+								//retenue.getReservations().add(resFin);
+								String resIDURI = "http://localhost:8080/" + "agenceservice/api/chambres/" + retenue.getId();
+								retenue.getReservationURIs().add(resIDURI);
+								//System.out.println(retenue.getReservationURIs().isEmpty());
+								retenue.setNblits(300);
+								
+								proxy.put(resIDURI, retenue);
 							}
 							
 						}

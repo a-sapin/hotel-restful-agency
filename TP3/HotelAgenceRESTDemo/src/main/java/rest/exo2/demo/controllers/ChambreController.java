@@ -55,7 +55,7 @@ public class ChambreController {
 					chambre.setNblits(newChambre.getNblits());
 					chambre.setPrixnuit(newChambre.getPrixnuit());
 					chambre.setHotel(newChambre.getHotel());
-					chambre.setReservations((ArrayList<Reservation>)newChambre.getReservations());
+					chambre.setReservationURIs(newChambre.getReservationURIs());
 					return rep.save(chambre);
 				})
 				.orElseGet(() -> rep.save(newChambre));
